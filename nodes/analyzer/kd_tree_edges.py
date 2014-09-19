@@ -16,6 +16,8 @@
 #
 # ##### END GPL LICENSE BLOCK #####
 
+import time
+
 import bpy
 from bpy.props import IntProperty, FloatProperty, BoolProperty, StringProperty
 import mathutils
@@ -23,7 +25,7 @@ from mathutils import Vector
 
 from node_tree import SverchCustomTreeNode
 from data_structure import updateNode, SvSetSocketAnyType, SvGetSocketAnyType, node_id
-
+from collections import Counter
 
 # documentation/blender_python_api_2_70_release/mathutils.kdtree.html
 class SvKDTreeEdgesNode(bpy.types.Node, SverchCustomTreeNode):
@@ -106,6 +108,7 @@ class SvKDTreeEdgesNode(bpy.types.Node, SverchCustomTreeNode):
         self.run_kdtree(verts, socket_inputs)
 
     def run_kdtree(self, verts, socket_inputs):
+        start = time.perf_counter()
         mindist, maxdist, maxNum, skip = socket_inputs
         n_id = node_id(self)
         # make kdtree
@@ -123,12 +126,18 @@ class SvKDTreeEdgesNode(bpy.types.Node, SverchCustomTreeNode):
         # set minimum values
         maxNum = max(maxNum, 1)
         skip = max(skip, 0)
-
+        kd_time = time.perf_counter() - start
         # makes edges
         e = set()
         mcount = 0
+        start = time.perf_counter()
+        out_count = Counter()
         for i, vtx in enumerate(verts):
             num_edges = 0
+            if out_count[i] == maxNum:
+                print("found enough edges for {}".format(i))
+                continue
+                
             for (co, index, dist) in kd.find_range(vtx, maxdist):
                 if (dist <= mindist) or (i == index):
                     continue
@@ -139,11 +148,14 @@ class SvKDTreeEdgesNode(bpy.types.Node, SverchCustomTreeNode):
                     num_edges += 1
                     continue
                 e.add(tuple(sorted([i, index])))
+                out_count[i] += 1
+                out_count[index] += 1
                 mcount += 1
                 num_edges += 1
 
         #print(len(e), 'vs', mcount)
-
+        edge_time = time.perf_counter() - start
+        print("KD {:4f} EDGE {:4f}".format(kd_time, edge_time))
         SvSetSocketAnyType(self, 'Edges', [list(e)])
 
     def update_socket(self, context):
