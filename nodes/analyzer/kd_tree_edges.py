@@ -106,7 +106,6 @@ class SvKDTreeEdgesNode(bpy.types.Node, SverchCustomTreeNode):
         self.run_kdtree(verts, socket_inputs)
 
     def run_kdtree(self, verts, socket_inputs):
-        print("running kdtree")
         mindist, maxdist, maxNum, skip = socket_inputs
         n_id = node_id(self)
         # make kdtree
