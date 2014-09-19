@@ -17,12 +17,12 @@
 # ##### END GPL LICENSE BLOCK #####
 
 import bpy
-from bpy.props import EnumProperty, StringProperty
+from bpy.props import EnumProperty, StringProperty, BoolProperty
 import mathutils
 from mathutils import Vector
 
 from node_tree import SverchCustomTreeNode
-from data_structure import SvSetSocketAnyType, SvGetSocketAnyType
+from data_structure import SvSetSocketAnyType, SvGetSocketAnyType, node_id
 
 
 # documentation/blender_python_api_2_70_release/mathutils.kdtree.html
@@ -33,8 +33,36 @@ class SvKDTreeNode(bpy.types.Node, SverchCustomTreeNode):
     bl_icon = 'OUTLINER_OB_EMPTY'
 
     current_mode = StringProperty(default="FIND")
-
+    
+    def bake_kdtree(self, context):
+        n_id = node_id(self)
+       
+        if self.baked:
+            verts = SvGetSocketAnyType(self, self.inputs[0])[0]
+            size = len(verts)
+            kd = mathutils.kdtree.KDTree(size)
+            for i, vtx in enumerate(verts):
+                kd.insert(Vector(vtx), i)
+            kd.balance()
+            self.node_dict[n_id] = kd
+        else:
+            self.node_dict.pop(n_id, None)
+        
+    n_id = StringProperty(default='')
+    baked = BoolProperty(update=bake_kdtree)
+    node_dict = {}
+    
     def mode_change(self, context):
+        n_id = node_id(self)
+        if self.baked:
+            size = len(verts)
+            kd = mathutils.kdtree.KDTree(size)
+            for i, vtx in enumerate(verts):
+                kd.insert(Vector(vtx), i)
+            kd.balance()
+            self.node_dict[n_id] = kd
+        else:
+            self.node_dict.pop(n_id, None)
 
         # just because click doesn't mean we need to change mode
         mode = self.mode
@@ -112,7 +140,11 @@ class SvKDTreeNode(bpy.types.Node, SverchCustomTreeNode):
     def draw_buttons(self, context, layout):
         layout.label("Search mode:")
         layout.prop(self, "mode", expand=True)
-
+    
+    def draw_buttons_ext(self, context, layout):
+        self.draw_buttons(context, layout)
+        layout.prop(self, "baked", text="Bake KDTree")
+    
     def init(self, context):
         self.inputs.new('VerticesSocket', 'Verts', 'Verts')
         self.inputs.new('VerticesSocket', 'Check Verts', 'Check Verts')
@@ -126,7 +158,7 @@ class SvKDTreeNode(bpy.types.Node, SverchCustomTreeNode):
     def update(self):
         inputs = self.inputs
         outputs = self.outputs
-
+        n_id = node_id(self)
         if not ('Verts' in inputs and inputs['Verts'].links):
             return
 
@@ -142,16 +174,21 @@ class SvKDTreeNode(bpy.types.Node, SverchCustomTreeNode):
 
         with small vert lists I don't imagine this will be very noticeable,
         '''
+        
 
         # make kdtree
         # documentation/blender_python_api_2_70_release/mathutils.kdtree.html
-        size = len(verts)
-        kd = mathutils.kdtree.KDTree(size)
+        if self.baked and n_id in self.node_dict:
+            kd = self.node_dict[n_id]
+            print("got baked kd tree")
+        else:
+            size = len(verts)
+            kd = mathutils.kdtree.KDTree(size)
 
-        for i, vtx in enumerate(verts):
-            kd.insert(Vector(vtx), i)
-        kd.balance()
-
+            for i, vtx in enumerate(verts):
+                kd.insert(Vector(vtx), i)
+            kd.balance()
+            
         reset_outs = {
             'FIND': ['proxima .co', 'proxima .idx', 'proxima dist'],
             'FIND_N': ['n proxima .co', 'n proxima .idx', 'n proxima dist'],
