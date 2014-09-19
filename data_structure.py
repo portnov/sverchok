@@ -916,6 +916,8 @@ def socket_id(socket):
 
 
 def node_id(node):
+    if not hasattr(node, "n_id"):
+        return None
     if not node.n_id:
         node.n_id = str(hash(node) ^ hash(time.monotonic()))
     return node.n_id

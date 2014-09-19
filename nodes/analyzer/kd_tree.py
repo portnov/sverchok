@@ -178,7 +178,7 @@ class SvKDTreeNode(bpy.types.Node, SverchCustomTreeNode):
 
         # make kdtree
         # documentation/blender_python_api_2_70_release/mathutils.kdtree.html
-        if self.baked and n_id in self.node_dict:
+        if hasattr(self, "baked") and self.baked and n_id in self.node_dict:
             kd = self.node_dict[n_id]
             print("got baked kd tree")
         else:

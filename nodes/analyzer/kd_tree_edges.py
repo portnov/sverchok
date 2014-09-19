@@ -17,12 +17,12 @@
 # ##### END GPL LICENSE BLOCK #####
 
 import bpy
-from bpy.props import IntProperty, FloatProperty
+from bpy.props import IntProperty, FloatProperty, BoolProperty, StringProperty
 import mathutils
 from mathutils import Vector
 
 from node_tree import SverchCustomTreeNode
-from data_structure import updateNode, SvSetSocketAnyType, SvGetSocketAnyType
+from data_structure import updateNode, SvSetSocketAnyType, SvGetSocketAnyType, node_id
 
 
 # documentation/blender_python_api_2_70_release/mathutils.kdtree.html
@@ -47,6 +47,25 @@ class SvKDTreeEdgesNode(bpy.types.Node, SverchCustomTreeNode):
     skip = IntProperty(name='skip', description='skip first n',
                        default=0, min=0,
                        options={'ANIMATABLE'}, update=updateNode)
+    
+    
+    def bake_kdtree(self, context):
+        n_id = node_id(self)
+       
+        if self.baked:
+            verts = SvGetSocketAnyType(self, self.inputs[0])[0]
+            size = len(verts)
+            kd = mathutils.kdtree.KDTree(size)
+            for i, vtx in enumerate(verts):
+                kd.insert(Vector(vtx), i)
+            kd.balance()
+            self.node_dict[n_id] = kd
+        else:
+            self.node_dict.pop(n_id, None)                   
+    
+    n_id = StringProperty(default='')
+    baked = BoolProperty(update=bake_kdtree)
+    node_dict = {}
 
     def init(self, context):
         self.inputs.new('VerticesSocket', 'Verts', 'Verts')
@@ -57,6 +76,9 @@ class SvKDTreeEdgesNode(bpy.types.Node, SverchCustomTreeNode):
 
         self.outputs.new('StringsSocket', 'Edges', 'Edges')
 
+    def draw_buttons_ext(self, context, layout):
+        layout.prop(self, "baked", text = "Bake KDTree")
+        
     def update(self):
         inputs = self.inputs
         outputs = self.outputs
@@ -80,21 +102,25 @@ class SvKDTreeEdgesNode(bpy.types.Node, SverchCustomTreeNode):
             else:
                 sock_input = s_default_value
             socket_inputs.append(sock_input)
-
+        
         self.run_kdtree(verts, socket_inputs)
 
     def run_kdtree(self, verts, socket_inputs):
+        print("running kdtree")
         mindist, maxdist, maxNum, skip = socket_inputs
-
+        n_id = node_id(self)
         # make kdtree
         # documentation/blender_python_api_2_70_release/mathutils.kdtree.html
-        size = len(verts)
-        kd = mathutils.kdtree.KDTree(size)
+        if hasattr(self, "baked") and self.baked and n_id in self.node_dict:
+            kd = self.node_dict[n_id]
+            print("got baked kd tree")
+        else:
+            size = len(verts)
+            kd = mathutils.kdtree.KDTree(size)
 
-        for i, vtx in enumerate(verts):
-            kd.insert(Vector(vtx), i)
-        kd.balance()
-
+            for i, vtx in enumerate(verts):
+                kd.insert(Vector(vtx), i)
+            kd.balance()
         # set minimum values
         maxNum = max(maxNum, 1)
         skip = max(skip, 0)
@@ -117,7 +143,7 @@ class SvKDTreeEdgesNode(bpy.types.Node, SverchCustomTreeNode):
                 mcount += 1
                 num_edges += 1
 
-        print(len(e), 'vs', mcount)
+        #print(len(e), 'vs', mcount)
 
         SvSetSocketAnyType(self, 'Edges', [list(e)])
 
