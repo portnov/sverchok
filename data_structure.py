@@ -1012,6 +1012,14 @@ def SvGetSocket(socket, deepcopy=True):
                 print("cache miss:", socket.node.name, "->", socket.name, "from:", other.node.name, "->", other.name)
     return None
 
+def SvGetOutputSocket(socket):
+    global socket_data_cache
+    s_id = socket_id(socket)
+    sdc = socket_data_cache.get(socket.id_data.name)
+    if not sdc:
+        return None
+    return sdc.get(s_id)    
+        
 
 def reset_socket_cache(ng):
     """

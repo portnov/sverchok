@@ -29,7 +29,6 @@ from core.update_system import (build_update_list, sverchok_update,
                                 get_update_lists)
 from core import upgrade_nodes
 
-
 class SvColors(bpy.types.PropertyGroup):
     """ Class for colors CollectionProperty """
     color = FloatVectorProperty(
@@ -186,7 +185,19 @@ class SverchCustomTree(NodeTree):
     sv_show = BoolProperty(name="Show", default=True, description='Show this layout', update=turn_off_ng)
     sv_bake = BoolProperty(name="Bake", default=True, description='Bake this layout')
     sv_user_colors = StringProperty(default="")
-
+    
+    
+    
+    def view_callback(self, context):
+        from utils import vertsview
+        print(self.name)
+        if self.sv_show_verts:
+            vertsview.callback_enable(self.name)
+        else:
+            vertsview.callback_disable(self.name)
+            
+    sv_show_verts = BoolProperty(name="Show verts", default=False, update=view_callback)
+    
     # get update list for debug info, tuple (fulllist,dictofpartiallists)
     def get_update_lists(self):
         return get_update_lists(self)

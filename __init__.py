@@ -77,6 +77,7 @@ utils_modules = [
     "cad_module", "sv_bmesh_utils", "sv_curve_utils", "voronoi",
     # callbacks for bgl
     "viewer_draw", "index_viewer_draw", "nodeview_bgl_viewer_draw", "viewer_draw_mk2",
+    "vertsview",
     # text editor ui
     "text_editor_submenu", "text_editor_plugins",
     # node_view ui tool + panels

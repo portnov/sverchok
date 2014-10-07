@@ -505,6 +505,7 @@ class SverchokToolsMenu(bpy.types.Panel):
             layout.row().operator(
                 SverchokCheckForUpgrades.bl_idname, text='Check for new version')
         #       row.prop(tree, 'sv_bake',text=' ')
+        layout.prop(tree, "sv_show_verts")
 
 sv_tools_classes = [
     SverchokUpdateCurrent,
