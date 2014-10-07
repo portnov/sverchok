@@ -119,7 +119,7 @@ def draw_callback_view(n_id):
                 data = verts
                 break
     if not data:
-        retun
+        return
 
     glPointSize(3)
     glColor3f(1, 0, 0)
