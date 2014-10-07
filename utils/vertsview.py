@@ -122,12 +122,15 @@ def draw_callback_view(n_id):
         return
 
     glPointSize(3)
-    glColor3f(1, 0, 0)
+    colors = [[1,0,0],[0,1,0],[0,0,1]]
     glBegin(GL_POINTS)
-    
-    for obj in data:
+    for i,obj in enumerate(data):
+        
+        glColor3f(*colors[i%3] )
+        
         for vec in obj:
             glVertex3f(*vec)
+    
     glEnd()
 
     glDisable(GL_POINT_SIZE)
