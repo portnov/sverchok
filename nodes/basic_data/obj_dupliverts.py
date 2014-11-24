@@ -20,7 +20,7 @@ from random import random
 import numpy as np
 
 import bpy
-from bpy.props import StringProperty
+from bpy.props import StringProperty, BoolProperty, EnumProperty
 
 from sverchok.node_tree import SverchCustomTreeNode
 from sverchok.data_structure import updateNode
@@ -51,6 +51,20 @@ class SvObjDuplivertOne(bpy.types.Node, SverchCustomTreeNode):
     name_child = StringProperty(
         description="name of object to duplicate")  # ,  update=updateNode)
 
+    dupli_options = [
+        ("NONE",   "None",   "", 0),
+        ("VERTS",  "Verts",  "", 1),
+    ]
+
+    dupli_mode = EnumProperty(
+        items=dupli_options,
+        name="DupliOptions",
+        description="Dupli choice",
+        default="NONE",
+        update=updateNode)
+
+    parent_permits_rotation = BoolProperty(description='used to store rotation settings')
+
     def sv_init(self, context):
         self.inputs.new("SvObjectSocket", "Parent")
         self.inputs.new("SvObjectSocket", "Child")
@@ -58,38 +72,13 @@ class SvObjDuplivertOne(bpy.types.Node, SverchCustomTreeNode):
 
     def draw_buttons(self, context, layout):
         col = layout.column()
-        # col.prop_search(self, 'name_parent', bpy.data, 'objects', text='parent')
-
         if self.name_child and self.name_parent:
             ob = bpy.data.objects[self.name_parent]
+            row = col.row()
+            row.prop(self, 'dupli_mode', expand=True)
 
-            layout.prop(ob, "dupli_type", expand=True)
-
-            if ob.dupli_type == 'FRAMES':
-                split = layout.split()
-
-                col = split.column(align=True)
-                col.prop(ob, "dupli_frames_start", text="Start")
-                col.prop(ob, "dupli_frames_end", text="End")
-
-                col = split.column(align=True)
-                col.prop(ob, "dupli_frames_on", text="On")
-                col.prop(ob, "dupli_frames_off", text="Off")
-
-                layout.prop(ob, "use_dupli_frames_speed", text="Speed")
-
-            elif ob.dupli_type == 'VERTS':
-                layout.prop(ob, "use_dupli_vertices_rotation", text="Rotation")
-
-            elif ob.dupli_type == 'FACES':
-                row = layout.row()
-                row.prop(ob, "use_dupli_faces_scale", text="Scale")
-                sub = row.row()
-                sub.active = ob.use_dupli_faces_scale
-                sub.prop(ob, "dupli_faces_scale", text="Inherit Scale")
-
-            elif ob.dupli_type == 'GROUP':
-                layout.prop(ob, "dupli_group", text="Group")
+            if self.dupli_mode == 'VERTS':
+                col.prop(self, 'parent_permits_rotation', text='rotate parent verts')
 
         col.separator()
         op_one = col.operator('node.sv_fdp_center_child', text='Center Child')
@@ -120,7 +109,12 @@ class SvObjDuplivertOne(bpy.types.Node, SverchCustomTreeNode):
             self.name_child = c.name
             c.parent = p
 
-            p.dupli_type = 'VERTS'
+            print(self.dupli_mode)
+            p.dupli_type = self.dupli_mode
+            if p.dupli_type == 'NONE':
+                return
+
+            p.use_dupli_vertices_rotation = self.parent_permits_rotation
 
             if p.use_dupli_vertices_rotation:
                 print('Parent Provides dupli verts!')
