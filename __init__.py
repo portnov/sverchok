@@ -95,7 +95,7 @@ def get_all_imports():
                 yield path + "." + name
 
 for mod_name in get_all_imports():
-    print(mod_name)
+    #print(mod_name)
     mod = importlib.import_module(mod_name)
     imported_modules.append(mod)
 
@@ -106,9 +106,6 @@ imported_modules.append(old_nodes)
 reload_event = bool("bpy" in locals())
 
 if reload_event:   
-    import nodeitems_utils
-    #  reload the base modules
-    #  then reload nodes after the node module as been reloaded
     for im in imported_modules:
         importlib.reload(im)
     old_nodes.reload_old()
@@ -129,11 +126,12 @@ sv_ascii_logo = """\
 def register():
     bpy.utils.register_module(__name__)
     bpy.utils.register_module("sverchok")
+    # still needed for now but optional for most modules
     for m in imported_modules:
         if hasattr(m, "register"):
             m.register()
     # this is used to access preferences, should/could be hidden
-    # in an interface
+    # in an interface or sverchok.__name__
     data_structure.SVERCHOK_NAME = __name__
     print("** Have a nice day with sverchok  **\n")
     #print(sv_ascii_logo)   
@@ -146,6 +144,7 @@ def register():
 def unregister():
     bpy.utils.unregister_module(__name__)
     bpy.utils.unregister_module("sverchok")
+    # still needed, see register()
     for m in reversed(imported_modules):
         if hasattr(m, "unregister"):
             m.unregister()
