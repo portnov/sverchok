@@ -122,9 +122,3 @@ class SvEmptyOutNode(bpy.types.Node, SverchCustomTreeNode):
                     print("{0} failed to remove empty".format(self.name))
 
 
-def register():
-    bpy.utils.register_class(SvEmptyOutNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvEmptyOutNode)

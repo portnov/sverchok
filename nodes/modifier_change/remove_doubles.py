@@ -136,13 +136,3 @@ class SvRemoveDoublesNode(bpy.types.Node, SverchCustomTreeNode):
             if 'Doubles' in self.outputs and self.outputs['Doubles'].links:
                 SvSetSocketAnyType(self, 'Doubles', d_out)
 
-def register():
-    bpy.utils.register_class(SvRemoveDoublesNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvRemoveDoublesNode)
-
-if __name__ == '__main__':
-    register()
-

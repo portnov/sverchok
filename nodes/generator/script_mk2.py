@@ -284,10 +284,3 @@ class SvScriptNodeMK2(bpy.types.Node, SverchCustomTreeNode):
             return self.bl_label
             
 
-def register():
-    bpy.utils.register_class(SvScriptNodeMK2)    
-    bpy.utils.register_class(SvDefaultScript2Template)
-
-def unregister():
-    bpy.utils.unregister_class(SvScriptNodeMK2)
-    bpy.utils.unregister_class(SvDefaultScript2Template)

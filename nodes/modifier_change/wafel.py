@@ -507,20 +507,3 @@ class SvWafelNode(bpy.types.Node, SverchCustomTreeNode):
                 print(self.name, 'is finishing')
         
 
-def register():
-    bpy.utils.register_class(SvWafelNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvWafelNode)
-
-
-if __name__ == '__main__':
-    register()
-
-
-
-
-
-
-

@@ -120,12 +120,3 @@ class SphereNode(bpy.types.Node, SverchCustomTreeNode):
 
 
 
-def register():
-    bpy.utils.register_class(SphereNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(SphereNode)
-
-if __name__ == '__main__':
-    register()

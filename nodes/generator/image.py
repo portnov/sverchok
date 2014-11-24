@@ -161,9 +161,3 @@ class ImageNode(bpy.types.Node, SverchCustomTreeNode):
         return vertices
 
 
-def register():
-    bpy.utils.register_class(ImageNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(ImageNode)

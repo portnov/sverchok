@@ -69,9 +69,3 @@ class RandomNode(bpy.types.Node, SverchCustomTreeNode):
         self.outputs[0].sv_set(Random)
 
 
-def register():
-    bpy.utils.register_class(RandomNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(RandomNode)

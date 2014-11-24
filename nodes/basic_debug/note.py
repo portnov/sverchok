@@ -136,11 +136,3 @@ class NoteNode(bpy.types.Node, SverchCustomTreeNode):
         self.n_id = ''
         node_id(self)
 
-def register():
-    bpy.utils.register_class(NoteNode)
-
-def unregister():
-    bpy.utils.unregister_class(NoteNode)
-
-if __name__ == '__main__':
-    register()

@@ -63,12 +63,3 @@ class SvDebugPrintNode(bpy.types.Node, SverchCustomTreeNode):
             if socket.links and self.print_socket[i]:
                 print(SvGetSocketAnyType(self, socket, deepcopy=False))
        
-def register():
-    bpy.utils.register_class(SvDebugPrintNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvDebugPrintNode)
-
-if __name__ == '__main__':
-    register()

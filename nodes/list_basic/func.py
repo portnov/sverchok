@@ -106,9 +106,3 @@ class ListFuncNode(bpy.types.Node, SverchCustomTreeNode):
             result = sum_d / len(data)
         return result
 
-def register():
-    bpy.utils.register_class(ListFuncNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(ListFuncNode)

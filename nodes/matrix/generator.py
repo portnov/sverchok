@@ -82,9 +82,3 @@ class MatrixGenNode(bpy.types.Node, SverchCustomTreeNode):
 
 
 
-def register():
-    bpy.utils.register_class(MatrixGenNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(MatrixGenNode)

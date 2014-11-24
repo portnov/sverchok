@@ -199,9 +199,6 @@ classes = [
 
 
 def register():
-    for class_name in classes:
-        bpy.utils.register_class(class_name)
-
     wm = bpy.context.window_manager
     kc = wm.keyconfigs.addon
     if kc:
@@ -211,9 +208,6 @@ def register():
 
 
 def unregister():
-    for class_name in classes:
-        bpy.utils.unregister_class(class_name)
-
     wm = bpy.context.window_manager
     kc = wm.keyconfigs.addon
     if kc:

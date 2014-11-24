@@ -116,9 +116,3 @@ class DistancePPNode(bpy.types.Node, SverchCustomTreeNode):
 
 
 
-def register():
-    bpy.utils.register_class(DistancePPNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(DistancePPNode)

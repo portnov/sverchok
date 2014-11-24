@@ -142,9 +142,3 @@ class SvBoxNode(bpy.types.Node, SverchCustomTreeNode):
             SvSetSocketAnyType(self, 'Pols', out[2])
 
 
-def register():
-    bpy.utils.register_class(SvBoxNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvBoxNode)

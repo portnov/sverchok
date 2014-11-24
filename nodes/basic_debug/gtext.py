@@ -205,14 +205,3 @@ class GTextNode(bpy.types.Node, SverchCustomTreeNode):
         generate_greasepencil(self, text, col, pos, fdict)
 
 
-def register():
-    bpy.utils.register_class(GTextNode)
-    bpy.utils.register_class(SverchokGText)
-
-
-def unregister():
-    bpy.utils.unregister_class(SverchokGText)
-    bpy.utils.unregister_class(GTextNode)
-
-if __name__ == '__main__':
-    register()

@@ -147,9 +147,3 @@ class AdaptivePolsNode(bpy.types.Node, SverchCustomTreeNode):
         self.update()
 
 
-def register():
-    bpy.utils.register_class(AdaptivePolsNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(AdaptivePolsNode)

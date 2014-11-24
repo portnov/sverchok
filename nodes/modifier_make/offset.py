@@ -254,13 +254,3 @@ class SvOffsetNode(bpy.types.Node, SverchCustomTreeNode):
 
 
 
-def register():
-    bpy.utils.register_class(SvOffsetNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvOffsetNode)
-
-if __name__ == '__main__':
-    register()
-

@@ -285,9 +285,3 @@ class ScalarMathNode(bpy.types.Node, SverchCustomTreeNode):
         self.update()
 
 
-def register():
-    bpy.utils.register_class(ScalarMathNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(ScalarMathNode)

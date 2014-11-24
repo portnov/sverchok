@@ -57,9 +57,3 @@ class ListSumNode(bpy.types.Node, SverchCustomTreeNode):
         return out
 
 
-def register():
-    bpy.utils.register_class(ListSumNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(ListSumNode)

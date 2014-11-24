@@ -136,9 +136,3 @@ class WifiOutNode(bpy.types.Node, SverchCustomTreeNode):
                 SvSetSocketAnyType(self, out_socket.name, data)
 
 
-def register():
-    bpy.utils.register_class(WifiOutNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(WifiOutNode)

@@ -91,12 +91,3 @@ class SvScaleNode(bpy.types.Node, SverchCustomTreeNode):
         self.update()
 
 
-def register():
-    bpy.utils.register_class(SvScaleNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvScaleNode)
-
-if __name__ == '__main__':
-    register()

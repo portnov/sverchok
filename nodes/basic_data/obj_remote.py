@@ -90,11 +90,3 @@ class SvObjRemoteNode(bpy.types.Node, SverchCustomTreeNode):
             self.show_string_box = 0
 
 
-def register():
-    bpy.utils.register_class(SvObjRemoteNode)
-    #bpy.utils.register_class(SvInstancerOp)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvObjRemoteNode)
-    #bpy.utils.unregister_class(SvInstancerOp)

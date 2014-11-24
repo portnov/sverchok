@@ -113,9 +113,3 @@ class SvListSplitNode(bpy.types.Node, SverchCustomTreeNode):
 
 
 
-def register():
-    bpy.utils.register_class(SvListSplitNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvListSplitNode)

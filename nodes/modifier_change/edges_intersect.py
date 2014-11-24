@@ -206,9 +206,3 @@ class SvIntersectEdgesNode(bpy.types.Node, SverchCustomTreeNode):
         SvSetSocketAnyType(self, 'Edges_out', [edges_out])
 
 
-def register():
-    bpy.utils.register_class(SvIntersectEdgesNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvIntersectEdgesNode)

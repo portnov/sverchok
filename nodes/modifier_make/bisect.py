@@ -143,9 +143,3 @@ class SvBisectNode(bpy.types.Node, SverchCustomTreeNode):
                 SvSetSocketAnyType(self, 'polygons', polys_out)
 
 
-def register():
-    bpy.utils.register_class(SvBisectNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvBisectNode)

@@ -44,9 +44,3 @@ class ConverterNode(bpy.types.Node, SverchCustomTreeNode):
                 if s.links:
                     SvSetSocketAnyType(self, s.name, out)
 
-def register():
-    bpy.utils.register_class(ConverterNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(ConverterNode)

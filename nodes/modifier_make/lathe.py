@@ -155,9 +155,3 @@ class SvLatheNode(bpy.types.Node, SverchCustomTreeNode):
         SvSetSocketAnyType(self, 'Poly', faces_out)
 
 
-def register():
-    bpy.utils.register_class(SvLatheNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvLatheNode)

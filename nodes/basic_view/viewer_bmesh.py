@@ -388,14 +388,3 @@ class BmeshViewerNode(bpy.types.Node, SverchCustomTreeNode):
         self.update()
 
 
-def register():
-    bpy.utils.register_class(BmeshViewerNode)
-    bpy.utils.register_class(SvBmeshViewOp)
-
-
-def unregister():
-    bpy.utils.unregister_class(BmeshViewerNode)
-    bpy.utils.unregister_class(SvBmeshViewOp)
-
-if __name__ == '__main__':
-    register()

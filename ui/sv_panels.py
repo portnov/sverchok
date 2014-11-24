@@ -221,23 +221,11 @@ class SverchokToolsMenu(bpy.types.Panel):
         #       row.prop(tree, 'sv_bake',text=' ')
             
         
-sv_tools_classes = [
-    SverchokToolsMenu,
-    Sv3DPanel,
-]
 
 
 def register():
     bpy.types.SverchCustomTreeType.SvShowIn3D = BoolProperty(name='show in panel',default=True, \
             description='Show properties in 3d panel or not')
-    for class_name in sv_tools_classes:
-        bpy.utils.register_class(class_name)
-
-def unregister():
-    # cargo cult to unregister in reverse order? I don't think this is needed.
-    # maybe it was handy at some point?
-    for class_name in reversed(sv_tools_classes):
-        bpy.utils.unregister_class(class_name)
 
 if __name__ == '__main__':
     register()

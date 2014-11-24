@@ -97,9 +97,3 @@ class MatrixDeformNode(bpy.types.Node, SverchCustomTreeNode):
         updateNode(self, context)
 
 
-def register():
-    bpy.utils.register_class(MatrixDeformNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(MatrixDeformNode)

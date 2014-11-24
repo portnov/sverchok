@@ -220,15 +220,3 @@ class ObjectsNode(bpy.types.Node, SverchCustomTreeNode):
                 SvSetSocketAnyType(self, 'Matrixes', mtrx_out)
 
 
-def register():
-    bpy.utils.register_class(SvObjSelected)
-    bpy.utils.register_class(ObjectsNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(ObjectsNode)
-    bpy.utils.unregister_class(SvObjSelected)
-
-if __name__ == '__main__':
-    register()
-

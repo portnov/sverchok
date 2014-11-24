@@ -85,9 +85,3 @@ class ListFlipNode(bpy.types.Node, SverchCustomTreeNode):
             SvSetSocketAnyType(self, 'data', out)
 
 
-def register():
-    bpy.utils.register_class(ListFlipNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(ListFlipNode)

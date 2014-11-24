@@ -71,14 +71,10 @@ def menu_draw(self, context):
 
 
 def register():
-    bpy.utils.register_class(SvScriptLoader)
-    bpy.utils.register_class(SvTextSubMenu)
     bpy.types.TEXT_MT_templates.append(menu_draw)
 
 
 def unregister():
-    bpy.utils.unregister_class(SvScriptLoader)
-    bpy.utils.unregister_class(SvTextSubMenu)
     bpy.types.TEXT_MT_templates.remove(menu_draw)
 
 if __name__ == "__main__":

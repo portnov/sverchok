@@ -195,12 +195,3 @@ class SvRotationNode(bpy.types.Node, SverchCustomTreeNode):
 
 
 
-def register():
-    bpy.utils.register_class(SvRotationNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvRotationNode)
-
-if __name__ == '__main__':
-    register()

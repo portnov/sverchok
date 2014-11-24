@@ -87,9 +87,3 @@ class ListShuffleNode(bpy.types.Node, SverchCustomTreeNode):
             return tuple(lst)
 
 
-def register():
-    bpy.utils.register_class(ListShuffleNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(ListShuffleNode)

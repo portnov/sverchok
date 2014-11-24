@@ -89,9 +89,3 @@ class VectorDropNode(bpy.types.Node, SverchCustomTreeNode):
         return out
 
 
-def register():
-    bpy.utils.register_class(VectorDropNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(VectorDropNode)

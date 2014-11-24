@@ -86,9 +86,3 @@ class SvMatrixEulerNode(bpy.types.Node, SverchCustomTreeNode):
         SvSetSocketAnyType(self, 'Matrix', Matrix_listing(mats))
 
 
-def register():
-    bpy.utils.register_class(SvMatrixEulerNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvMatrixEulerNode)

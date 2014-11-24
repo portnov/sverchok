@@ -59,9 +59,3 @@ class VectorNormalNode(bpy.types.Node, SverchCustomTreeNode):
                     SvSetSocketAnyType(self, 'Normals', normalsFORout)
 
 
-def register():
-    bpy.utils.register_class(VectorNormalNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(VectorNormalNode)

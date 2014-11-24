@@ -82,13 +82,3 @@ class SvVolumeNode(bpy.types.Node, SverchCustomTreeNode):
             VOLUME += det/6
         '''
 
-def register():
-    bpy.utils.register_class(SvVolumeNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvVolumeNode)
-
-if __name__ == '__main__':
-    register()
-

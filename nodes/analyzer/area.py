@@ -115,9 +115,3 @@ class AreaNode(bpy.types.Node, SverchCustomTreeNode):
 
 
 
-def register():
-    bpy.utils.register_class(AreaNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(AreaNode)

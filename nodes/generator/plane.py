@@ -146,9 +146,3 @@ class PlaneNode(bpy.types.Node, SverchCustomTreeNode):
         self.update()
 
 
-def register():
-    bpy.utils.register_class(PlaneNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(PlaneNode)

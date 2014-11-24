@@ -151,9 +151,3 @@ class SvInterpolationNode(bpy.types.Node, SverchCustomTreeNode):
                 SvSetSocketAnyType(self, 'Vertices', verts_out)
 
 
-def register():
-    bpy.utils.register_class(SvInterpolationNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvInterpolationNode)

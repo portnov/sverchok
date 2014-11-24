@@ -156,9 +156,3 @@ class BasicSplineNode(bpy.types.Node, SverchCustomTreeNode):
                 SvSetSocketAnyType(self, 'hnd Edges', h_edges_out)
 
 
-def register():
-    bpy.utils.register_class(BasicSplineNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(BasicSplineNode)

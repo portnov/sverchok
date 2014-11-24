@@ -168,9 +168,3 @@ class MaskListNode(bpy.types.Node, SverchCustomTreeNode):
         return list_b
 
 
-def register():
-    bpy.utils.register_class(MaskListNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(MaskListNode)

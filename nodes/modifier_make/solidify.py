@@ -132,12 +132,3 @@ class SvSolidifyNode(bpy.types.Node, SverchCustomTreeNode):
         self.update()
 
 
-def register():
-    bpy.utils.register_class(SvSolidifyNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvSolidifyNode)
-
-if __name__ == '__main__':
-    register()

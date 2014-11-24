@@ -339,10 +339,6 @@ class BasicTextMenu(bpy.types.Menu):
 
 
 def register():
-    bpy.utils.register_class(BasicTextMenu)
-    bpy.utils.register_class(SvVarnamesToSockets)
-    bpy.utils.register_class(SvLangConverter)
-    bpy.utils.register_class(SvNodeRefreshFromTextEditor)
 
     wm = bpy.context.window_manager
     kc = wm.keyconfigs.addon
@@ -367,7 +363,5 @@ def register():
 
 
 def unregister():
-    bpy.utils.unregister_class(SvVarnamesToSockets)
-    bpy.utils.unregister_class(SvLangConverter)
-    bpy.utils.unregister_class(BasicTextMenu)
-    bpy.utils.unregister_class(SvNodeRefreshFromTextEditor)
+    pass
+    # maybe remove the keymap here

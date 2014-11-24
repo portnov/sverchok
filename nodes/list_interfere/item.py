@@ -125,9 +125,3 @@ class ListItem2Node(bpy.types.Node, SverchCustomTreeNode):
         else:
             return f(data, items)
 
-def register():
-    bpy.utils.register_class(ListItem2Node)
-
-
-def unregister():
-    bpy.utils.unregister_class(ListItem2Node)

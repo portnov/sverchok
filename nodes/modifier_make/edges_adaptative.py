@@ -108,9 +108,3 @@ class SvAdaptiveEdgeNode(bpy.types.Node, SverchCustomTreeNode):
             SvSetSocketAnyType(self, 'Edges', edges_out)
 
 
-def register():
-    bpy.utils.register_class(SvAdaptiveEdgeNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvAdaptiveEdgeNode)

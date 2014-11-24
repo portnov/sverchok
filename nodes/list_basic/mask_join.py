@@ -128,9 +128,3 @@ class SvMaskJoinNode(bpy.types.Node, SverchCustomTreeNode):
         self.update()
 
 
-def register():
-    bpy.utils.register_class(SvMaskJoinNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvMaskJoinNode)

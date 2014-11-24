@@ -131,9 +131,3 @@ class SvCircleNode(bpy.types.Node, SverchCustomTreeNode):
             SvSetSocketAnyType(self, 'Polygons', plg)
 
 
-def register():
-    bpy.utils.register_class(SvCircleNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvCircleNode)

@@ -104,9 +104,3 @@ class SvVertexGroupNode(bpy.types.Node, SverchCustomTreeNode):
             obj.vertex_groups.active = obj.vertex_groups.new(name='Sv_VGroup')
 
 
-def register():
-    bpy.utils.register_class(SvVertexGroupNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvVertexGroupNode)

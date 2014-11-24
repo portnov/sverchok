@@ -175,12 +175,3 @@ class Formula2Node(bpy.types.Node, SverchCustomTreeNode):
         #return lst
 
 
-def register():
-    bpy.utils.register_class(Formula2Node)
-
-
-def unregister():
-    bpy.utils.unregister_class(Formula2Node)
-
-if __name__ == '__main__':
-    register()

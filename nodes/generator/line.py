@@ -87,9 +87,3 @@ class LineNode(bpy.types.Node, SverchCustomTreeNode):
             outputs['Edges'].sv_set(out[1])
 
 
-def register():
-    bpy.utils.register_class(LineNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(LineNode)

@@ -122,9 +122,3 @@ class SvKDTreeEdgesNode(bpy.types.Node, SverchCustomTreeNode):
         SvSetSocketAnyType(self, 'Edges', [list(e)])
 
 
-def register():
-    bpy.utils.register_class(SvKDTreeEdgesNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvKDTreeEdgesNode)

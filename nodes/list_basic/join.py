@@ -90,9 +90,3 @@ class ListJoinNode(bpy.types.Node, SverchCustomTreeNode):
 
             SvSetSocketAnyType(self, 'data', result)
 
-def register():
-    bpy.utils.register_class(ListJoinNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(ListJoinNode)

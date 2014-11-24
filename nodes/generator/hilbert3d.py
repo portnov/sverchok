@@ -99,13 +99,3 @@ class Hilbert3dNode(bpy.types.Node, SverchCustomTreeNode):
         self.update()
 
 
-def register():
-    bpy.utils.register_class(Hilbert3dNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(Hilbert3dNode)
-
-if __name__  == '__main__':
-    register()
-

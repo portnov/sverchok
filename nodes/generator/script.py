@@ -512,20 +512,3 @@ class SvScriptNode(bpy.types.Node, SverchCustomTreeNode):
 
     def update_socket(self, context):
         self.update()
-
-classes = [
-    SvScriptNode,
-    SvDefaultScriptTemplate,
-    SvScriptNodeCallbackOp,
-    SvScriptUICallbackOp
-]
-
-
-def register():
-    for class_name in classes:
-        bpy.utils.register_class(class_name)
-
-
-def unregister():
-    for class_name in classes:
-        bpy.utils.unregister_class(class_name)

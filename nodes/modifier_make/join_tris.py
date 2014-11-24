@@ -96,9 +96,3 @@ class SvJoinTrianglesNode(bpy.types.Node, SverchCustomTreeNode):
 
 
 
-def register():
-    bpy.utils.register_class(SvJoinTrianglesNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvJoinTrianglesNode)

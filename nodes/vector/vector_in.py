@@ -70,9 +70,3 @@ class GenVectorsNode(bpy.types.Node, SverchCustomTreeNode):
         self.outputs['Vectors'].sv_set(series_vec)
     
     
-def register():
-    bpy.utils.register_class(GenVectorsNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(GenVectorsNode)

@@ -45,9 +45,3 @@ class Float2IntNode(bpy.types.Node, SverchCustomTreeNode):
             return [cls.inte(i) for i in l]
 
 
-def register():
-    bpy.utils.register_class(Float2IntNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(Float2IntNode)

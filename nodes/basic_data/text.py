@@ -680,17 +680,3 @@ class SvTextOutNode(bpy.types.Node, SverchCustomTreeNode):
         return out
 
 
-def register():
-    bpy.utils.register_class(SvTextInOp)
-    bpy.utils.register_class(SvTextInNode)
-    bpy.utils.register_class(SvTextOutNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvTextInOp)
-    bpy.utils.unregister_class(SvTextInNode)
-    bpy.utils.unregister_class(SvTextOutNode)
-
-if __name__ == '__main__':
-    register()
-

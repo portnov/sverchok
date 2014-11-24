@@ -88,15 +88,3 @@ class IntegerNode(bpy.types.Node, SverchCustomTreeNode):
         if self.outputs[0].is_linked:
             self.outputs[0].sv_set([[Integer]])
 
-def register():
-    bpy.utils.register_class(IntegerNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(IntegerNode)
-
-if __name__ == '__main__':
-    register()
-
-
-

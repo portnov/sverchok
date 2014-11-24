@@ -79,9 +79,3 @@ class svAxisInputNode(bpy.types.Node, SverchCustomTreeNode):
 
             SvSetSocketAnyType(self, 'Vectors', [[axial_vector]])
 
-def register():
-    bpy.utils.register_class(svAxisInputNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(svAxisInputNode)

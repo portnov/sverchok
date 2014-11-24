@@ -102,9 +102,3 @@ class SvFillHolesNode(bpy.types.Node, SverchCustomTreeNode):
 
 
 
-def register():
-    bpy.utils.register_class(SvFillHolesNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvFillHolesNode)

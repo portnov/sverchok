@@ -85,9 +85,3 @@ class SvConvexHullNode(bpy.types.Node, SverchCustomTreeNode):
                 SvSetSocketAnyType(self, 'Polygons', polys_out)
 
 
-def register():
-    bpy.utils.register_class(SvConvexHullNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvConvexHullNode)

@@ -104,13 +104,3 @@ class SvListDecomposeNode(bpy.types.Node, SverchCustomTreeNode):
         return out
 
 
-def register():
-    bpy.utils.register_class(SvListDecomposeNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvListDecomposeNode)
-
-
-if __name__ == '__main__':
-    register()

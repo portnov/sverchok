@@ -115,15 +115,3 @@ class CentersPolsNode(bpy.types.Node, SverchCustomTreeNode):
                 SvSetSocketAnyType(self, 'Normals', Vector_degenerate([normals_out]))
 
 
-def register():
-    bpy.utils.register_class(CentersPolsNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(CentersPolsNode)
-    
-if __name__ == '__main__':
-    register()
-
-
-

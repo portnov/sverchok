@@ -125,9 +125,3 @@ class GenListRangeInt(bpy.types.Node, SverchCustomTreeNode):
         out = [f(*args) for args in zip(*match_long_repeat(param))]
         outputs['Range'].sv_set(out)
     
-def register():
-    bpy.utils.register_class(GenListRangeInt)
-
-
-def unregister():
-    bpy.utils.unregister_class(GenListRangeInt)

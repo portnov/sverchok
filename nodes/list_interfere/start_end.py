@@ -96,10 +96,3 @@ class ListFLNode(bpy.types.Node, SverchCustomTreeNode):
         return out
 
 
-def register():
-    bpy.utils.register_class(ListFLNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(ListFLNode)
-

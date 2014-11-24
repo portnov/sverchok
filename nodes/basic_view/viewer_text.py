@@ -183,16 +183,3 @@ class ViewerNode_text(bpy.types.Node, SverchCustomTreeNode):
 
 
 
-def register():
-    bpy.utils.register_class(SverchokViewer)
-    bpy.utils.register_class(ViewerNode_text)
-
-
-def unregister():
-    bpy.utils.unregister_class(ViewerNode_text)
-    bpy.utils.unregister_class(SverchokViewer)
-
-if __name__ == '__main__':
-    register()
-
-

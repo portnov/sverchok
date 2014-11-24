@@ -81,9 +81,3 @@ class SvVertMaskNode(bpy.types.Node, SverchCustomTreeNode):
                     SvSetSocketAnyType(self, 'Poly Egde', poly_edge_out)
 
 
-def register():
-    bpy.utils.register_class(SvVertMaskNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvVertMaskNode)

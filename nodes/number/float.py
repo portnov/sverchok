@@ -96,16 +96,3 @@ class FloatNode(bpy.types.Node, SverchCustomTreeNode):
         if self.outputs['Float'].is_linked:
             SvSetSocketAnyType(self, 'Float', [[Float]])
 
-def register():
-    bpy.utils.register_class(FloatNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(FloatNode)
-
-if __name__ == '__main__':
-    register()
-
-
-
-

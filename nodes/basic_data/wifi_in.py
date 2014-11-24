@@ -109,9 +109,3 @@ class WifiInNode(bpy.types.Node, SverchCustomTreeNode):
         multi_socket(self, min=1, breck=True)
 
 
-def register():
-    bpy.utils.register_class(WifiInNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(WifiInNode)

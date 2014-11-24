@@ -107,9 +107,3 @@ class SvNoiseNode(bpy.types.Node, SverchCustomTreeNode):
             self.outputs['Noise S'].sv_set(out)
 
 
-def register():
-    bpy.utils.register_class(SvNoiseNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvNoiseNode)

@@ -60,9 +60,3 @@ class ListLevelsNode(bpy.types.Node, SverchCustomTreeNode):
             SvSetSocketAnyType(self, 'data', preobrazovatel(data, userlevelb))
 
 
-def register():
-    bpy.utils.register_class(ListLevelsNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(ListLevelsNode)

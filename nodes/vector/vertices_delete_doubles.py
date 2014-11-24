@@ -60,9 +60,3 @@ class VertsDelDoublesNode(bpy.types.Node, SverchCustomTreeNode):
         return out
 
 
-def register():
-    bpy.utils.register_class(VertsDelDoublesNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(VertsDelDoublesNode)

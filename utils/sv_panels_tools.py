@@ -313,19 +313,7 @@ class SvLayoutScanProperties(bpy.types.Operator):
         return {'FINISHED'}
 
 
-sv_tools_classes = [
-    SverchokUpdateCurrent,
-    SverchokUpdateAll,
-    SverchokBakeAll,
-    SverchokCheckForUpgrades,
-    SverchokUpdateAddon,
-    SverchokPurgeCache,
-    SverchokHome,
-    Sv3dPropItem,
-    SvSwitchToLayout,
-    SvLayoutScanProperties,
-    SvClearNodesLayouts
-]
+
 
 
 def register():
@@ -333,18 +321,10 @@ def register():
         default=False, name='even used', description='remove even if \
         layout has one user (not fake user)')
 
-    for class_name in sv_tools_classes:
-        bpy.utils.register_class(class_name)
-
     bpy.types.SverchCustomTreeType.Sv3DProps = CollectionProperty(type=Sv3dPropItem)
     bpy.types.Scene.sv_new_version = BoolProperty(default=False)
 
 
-def unregister():
-    # cargo cult to unregister in reverse order? I don't think this is needed.
-    # maybe it was handy at some point?
-    for class_name in reversed(sv_tools_classes):
-        bpy.utils.unregister_class(class_name)
 
 if __name__ == '__main__':
     register()

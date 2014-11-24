@@ -118,12 +118,3 @@ class ZipNode(bpy.types.Node, SverchCustomTreeNode):
         self.update()
 
 
-def register():
-    bpy.utils.register_class(ZipNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(ZipNode)
-
-if __name__ == '__main__':
-    register()

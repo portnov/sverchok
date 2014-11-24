@@ -99,9 +99,3 @@ class ListRepeaterNode(bpy.types.Node, SverchCustomTreeNode):
         self.update()
 
 
-def register():
-    bpy.utils.register_class(ListRepeaterNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(ListRepeaterNode)

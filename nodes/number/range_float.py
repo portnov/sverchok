@@ -139,9 +139,3 @@ class SvGenFloatRange(bpy.types.Node, SverchCustomTreeNode):
         outputs['Range'].sv_set(out)
 
 
-def register():
-    bpy.utils.register_class(SvGenFloatRange)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvGenFloatRange)

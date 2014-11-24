@@ -61,9 +61,3 @@ class SvCacheNode(bpy.types.Node, SverchCustomTreeNode):
         out_data = data.get(out_frame, [])
         self.outputs[0].sv_set(out_data)
 
-def register():
-    bpy.utils.register_class(SvCacheNode)
-
-def unregister():
-    bpy.utils.unregister_class(SvCacheNode)
-

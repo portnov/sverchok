@@ -94,9 +94,3 @@ class SvMapRangeNode(bpy.types.Node, SverchCustomTreeNode):
         self.outputs['Value'].sv_set(out)
 
 
-def register():
-    bpy.utils.register_class(SvMapRangeNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvMapRangeNode)

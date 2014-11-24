@@ -229,17 +229,3 @@ class SverchokGroupLayoutsMenu(bpy.types.Panel):
         #        op = layout.operator("node.sv_node_group_edit", text="Edit")
         #        op.group_name = ng.name
                 
-classes = [
-    SverchokGroupLayoutsMenu,
-    SvNodeGroupCreator,
-    SvNodeGroupEdit,
-    SvNodeGroupEditDone
-]
-
-def register():
-    for class_name in classes:
-        bpy.utils.register_class(class_name)
-
-def unregister():
-    for class_name in reversed(classes):
-        bpy.utils.unregister_class(class_name)

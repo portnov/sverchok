@@ -59,9 +59,3 @@ class SvMatrixValueIn(bpy.types.Node, SverchCustomTreeNode):
 
 
 
-def register():
-    bpy.utils.register_class(SvMatrixValueIn)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvMatrixValueIn)

@@ -215,13 +215,3 @@ class LineConnectNode(bpy.types.Node, SverchCustomTreeNode):
                 SvSetSocketAnyType(self, 'data', result[1])
                 
                 
-def register():
-    bpy.utils.register_class(LineConnectNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(LineConnectNode)
-
-if __name__ == '__main__':
-    register()
-

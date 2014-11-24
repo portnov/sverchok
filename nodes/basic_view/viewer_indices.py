@@ -397,15 +397,3 @@ class IndexViewerNode(bpy.types.Node, SverchCustomTreeNode):
             textbake(idname=self.name, idtree=self.id_data.name)
 
 
-def register():
-    bpy.utils.register_class(IndexViewerNode)
-    bpy.utils.register_class(SvBakeText)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvBakeText)
-    bpy.utils.unregister_class(IndexViewerNode)
-
-
-if __name__ == '__main__':
-    register()

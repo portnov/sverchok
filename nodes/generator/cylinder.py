@@ -163,12 +163,3 @@ class CylinderNode(bpy.types.Node, SverchCustomTreeNode):
         self.update()
 
 
-def register():
-    bpy.utils.register_class(CylinderNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(CylinderNode)
-
-if __name__ == '__main__':
-    register()

@@ -108,9 +108,3 @@ class ShiftNode(bpy.types.Node, SverchCustomTreeNode):
         return list_all
 
 
-def register():
-    bpy.utils.register_class(ShiftNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(ShiftNode)

@@ -144,8 +144,3 @@ class SverchokApplyTheme(bpy.types.Operator):
         return {'FINISHED'}
         
            
-def register():
-    bpy.utils.register_class(SverchokApplyTheme)
-
-def unregister():
-    bpy.utils.unregister_class(SverchokApplyTheme)

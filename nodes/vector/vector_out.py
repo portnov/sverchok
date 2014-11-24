@@ -51,9 +51,3 @@ class VectorsOutNode(bpy.types.Node, SverchCustomTreeNode):
                     SvSetSocketAnyType(self, name, [X, Y, Z][i])
 
 
-def register():
-    bpy.utils.register_class(VectorsOutNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(VectorsOutNode)

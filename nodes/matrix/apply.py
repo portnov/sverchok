@@ -64,9 +64,3 @@ class MatrixApplyNode(bpy.types.Node, SverchCustomTreeNode):
 
 
 
-def register():
-    bpy.utils.register_class(MatrixApplyNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(MatrixApplyNode)

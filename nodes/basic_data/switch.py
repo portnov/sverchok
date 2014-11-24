@@ -95,8 +95,3 @@ class SvSwitchNode(bpy.types.Node, SverchCustomTreeNode):
                 out_s.sv_set(data)
             
         
-def register():
-    bpy.utils.register_class(SvSwitchNode)
-
-def unregister():
-    bpy.utils.unregister_class(SvSwitchNode)

@@ -190,9 +190,3 @@ class svBasicArcNode(bpy.types.Node, SverchCustomTreeNode):
 
 
 
-def register():
-    bpy.utils.register_class(svBasicArcNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(svBasicArcNode)

@@ -334,12 +334,3 @@ class SvNeuroOps(bpy.types.Operator):
 
 
 
-def register():
-    bpy.utils.register_class(SvNeuroOps)
-    bpy.utils.register_class(SvNeuroElman1LNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvNeuroElman1LNode)
-    bpy.utils.unregister_class(SvNeuroOps)
-

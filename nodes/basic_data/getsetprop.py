@@ -248,12 +248,3 @@ class SvSetPropNode(bpy.types.Node, SverchCustomTreeNode):
             assign_data(obj, data)
 
             
-def register():
-    bpy.utils.register_class(SvSetPropNode)
-    bpy.utils.register_class(SvGetPropNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvSetPropNode)
-    bpy.utils.unregister_class(SvGetPropNode)
-

@@ -112,9 +112,3 @@ class ListSliceNode(bpy.types.Node, SverchCustomTreeNode):
             return None
 
 
-def register():
-    bpy.utils.register_class(ListSliceNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(ListSliceNode)

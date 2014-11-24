@@ -266,9 +266,3 @@ class CrossSectionNode(bpy.types.Node, SverchCustomTreeNode):
 
 
 
-def register():
-    bpy.utils.register_class(CrossSectionNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(CrossSectionNode)

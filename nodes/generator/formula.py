@@ -414,15 +414,6 @@ class SvFormulaShapeNode(bpy.types.Node, SverchCustomTreeNode):
                 edg = [[[i-1, i] for i in range(1, Count)]]
                 SvSetSocketAnyType(self, 'Edges', edg)
 
-def register():
-    bpy.utils.register_class(SvFormulaShapeNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvFormulaShapeNode)
-if __name__ == '__main__':
-    register()
-
 
 
 

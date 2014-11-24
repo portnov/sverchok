@@ -200,12 +200,3 @@ class SverchokPreferences(AddonPreferences):
             row1.operator('node.sverchok_check_for_upgrades', text='Check for new version')
 
 
-def register():
-    bpy.utils.register_class(SverchokPreferences)
-
-
-def unregister():
-    bpy.utils.unregister_class(SverchokPreferences)
-
-if __name__ == '__main__':
-    register()

@@ -104,9 +104,3 @@ class MatrixInterpolationNode(bpy.types.Node, SverchCustomTreeNode):
         self.update()
 
 
-def register():
-    bpy.utils.register_class(MatrixInterpolationNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(MatrixInterpolationNode)

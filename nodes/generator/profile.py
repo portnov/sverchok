@@ -615,9 +615,3 @@ class SvProfileNode(bpy.types.Node, SverchCustomTreeNode):
                 SvSetSocketAnyType(self, 'Edges', full_result_edges)
 
 
-def register():
-    bpy.utils.register_class(SvProfileNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvProfileNode)

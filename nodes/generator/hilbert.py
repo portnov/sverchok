@@ -89,9 +89,3 @@ class HilbertNode(bpy.types.Node, SverchCustomTreeNode):
             out.extend(self.hilbert(x0 + xi/2 + yi,   y0 + xj/2 + yj,  -yi/2,-yj/2,-xi/2,-xj/2, n - 1))
             return out
 
-def register():
-    bpy.utils.register_class(HilbertNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(HilbertNode)

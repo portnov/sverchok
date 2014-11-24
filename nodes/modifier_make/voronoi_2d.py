@@ -141,11 +141,3 @@ class DelaunayTriangulation2DNode(bpy.types.Node, SverchCustomTreeNode):
             SvSetSocketAnyType(self, 'Polygons', tris_out)
 
 
-def register():
-    bpy.utils.register_class(Voronoi2DNode)
-    bpy.utils.register_class(DelaunayTriangulation2DNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(Voronoi2DNode)
-    bpy.utils.unregister_class(DelaunayTriangulation2DNode)

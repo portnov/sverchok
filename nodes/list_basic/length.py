@@ -72,9 +72,3 @@ class ListLengthNode(bpy.types.Node, SverchCustomTreeNode):
             return len(data)
 
 
-def register():
-    bpy.utils.register_class(ListLengthNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(ListLengthNode)

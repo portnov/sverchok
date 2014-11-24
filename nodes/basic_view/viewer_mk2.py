@@ -374,15 +374,3 @@ class ViewerNode2(bpy.types.Node, SverchCustomTreeNode):
             bake(idname=self.name, idtree=self.id_data.name)
 
 
-def register():
-    bpy.utils.register_class(ViewerNode2)
-    bpy.utils.register_class(SvObjBakeMK2)
-
-
-def unregister():
-    bpy.utils.unregister_class(ViewerNode2)
-    bpy.utils.unregister_class(SvObjBakeMK2)
-
-
-if __name__ == '__main__':
-    register()

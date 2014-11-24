@@ -313,9 +313,3 @@ class VectorMathNode(bpy.types.Node, SverchCustomTreeNode):
         return res
 
 
-def register():
-    bpy.utils.register_class(VectorMathNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(VectorMathNode)

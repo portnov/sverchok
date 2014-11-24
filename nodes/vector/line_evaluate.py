@@ -78,9 +78,3 @@ class EvaluateLine(bpy.types.Node, SverchCustomTreeNode):
         self.outputs['EvPoint'].sv_set(points)
 
 
-def register():
-    bpy.utils.register_class(EvaluateLine)
-
-
-def unregister():
-    bpy.utils.unregister_class(EvaluateLine)

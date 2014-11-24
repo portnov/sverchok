@@ -71,13 +71,3 @@ class Pols2EdgsNode(bpy.types.Node, SverchCustomTreeNode):
         return out
 
 
-def register():
-    bpy.utils.register_class(Pols2EdgsNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(Pols2EdgsNode)
-
-if __name__ == '__main__':
-    register()
-

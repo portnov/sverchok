@@ -133,9 +133,3 @@ class ListMatchNode(bpy.types.Node, SverchCustomTreeNode):
                     SvSetSocketAnyType(self, socket.name, out[i])
 
 
-def register():
-    bpy.utils.register_class(ListMatchNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(ListMatchNode)

@@ -71,9 +71,3 @@ class ListReverseNode(bpy.types.Node, SverchCustomTreeNode):
             return list[::-1]
 
 
-def register():
-    bpy.utils.register_class(ListReverseNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(ListReverseNode)

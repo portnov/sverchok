@@ -199,9 +199,3 @@ class SvVertSortNode(bpy.types.Node, SverchCustomTreeNode):
                 SvSetSocketAnyType(self, 'Item order', item_order)
 
 
-def register():
-    bpy.utils.register_class(SvVertSortNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvVertSortNode)

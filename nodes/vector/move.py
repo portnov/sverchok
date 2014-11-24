@@ -94,8 +94,3 @@ class VectorMoveNode(bpy.types.Node, SverchCustomTreeNode):
 
 
 
-def register():
-    bpy.utils.register_class(VectorMoveNode)
-
-def unregister():
-    bpy.utils.unregister_class(VectorMoveNode)

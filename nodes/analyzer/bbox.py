@@ -94,9 +94,3 @@ class SvBBoxNode(bpy.types.Node, SverchCustomTreeNode):
 
 
 
-def register():
-    bpy.utils.register_class(SvBBoxNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvBBoxNode)

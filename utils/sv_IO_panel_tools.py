@@ -504,13 +504,9 @@ def register():
         name='compress_output',
         description='option to also compress the json, will generate both')
 
-    bpy.utils.register_class(SvNodeTreeExporter)
-    bpy.utils.register_class(SvNodeTreeImporter)
 
 
 def unregister():
-    bpy.utils.unregister_class(SvNodeTreeImporter)
-    bpy.utils.unregister_class(SvNodeTreeExporter)
     del bpy.types.SverchCustomTreeType.new_nodetree_name
     del bpy.types.SverchCustomTreeType.compress_output
 

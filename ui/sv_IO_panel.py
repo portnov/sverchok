@@ -77,13 +77,3 @@ class SverchokIOLayoutsMenu(bpy.types.Panel):
         exp2.new_nodetree_name = ntree.new_nodetree_name
 
 
-def register():
-    bpy.utils.register_class(SverchokIOLayoutsMenu)
-
-
-def unregister():
-    bpy.utils.unregister_class(SverchokIOLayoutsMenu)
-
-
-if __name__ == '__main__':
-    register()

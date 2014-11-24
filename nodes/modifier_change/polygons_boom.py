@@ -65,9 +65,3 @@ class PolygonBoomNode(bpy.types.Node, SverchCustomTreeNode):
                 SvSetSocketAnyType(self, 'edg_pol', edpo_out)
 
 
-def register():
-    bpy.utils.register_class(PolygonBoomNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(PolygonBoomNode)

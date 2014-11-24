@@ -298,9 +298,3 @@ class SvKDTreeNode(bpy.types.Node, SverchCustomTreeNode):
         self.update()
 
 
-def register():
-    bpy.utils.register_class(SvKDTreeNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvKDTreeNode)

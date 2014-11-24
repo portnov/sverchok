@@ -360,13 +360,3 @@ class SvImageComponentsNode(bpy.types.Node, SverchCustomTreeNode):
         self.update()
 
 
-def register():
-    bpy.utils.register_class(svImageImporterOp)
-    bpy.utils.register_class(ImageComponentsOps)
-    bpy.utils.register_class(SvImageComponentsNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(ImageComponentsOps)
-    bpy.utils.unregister_class(SvImageComponentsNode)
-    bpy.utils.unregister_class(svImageImporterOp)

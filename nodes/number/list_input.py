@@ -102,9 +102,3 @@ class SvListInputNode(bpy.types.Node, SverchCustomTreeNode):
                 data = [list(zip(v_l[0:c:3], v_l[1:c:3], v_l[2:c:3]))]
             self.outputs[0].sv_set(data)
 
-def register():
-    bpy.utils.register_class(SvListInputNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvListInputNode)

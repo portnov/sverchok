@@ -105,9 +105,3 @@ class SvStethoscopeNode(bpy.types.Node, SverchCustomTreeNode):
         nvBGL.callback_disable(node_id(self))
 
 
-def register():
-    bpy.utils.register_class(SvStethoscopeNode)
-
-
-def unregister():
-    bpy.utils.unregister_class(SvStethoscopeNode)
