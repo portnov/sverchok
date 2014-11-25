@@ -62,7 +62,7 @@ import os
 if __name__ != "sverchok":
     sys.modules["sverchok"] = sys.modules[__name__]
     
-skip_dirs = ["old_nodes", "docs", "node_scripts", "__pycache__"]
+skip_dirs = {"old_nodes", "docs", "node_scripts", "__pycache__", ".git"}
 current_path = os.path.dirname(__file__)
 imported_modules = []
 
@@ -86,8 +86,7 @@ def get_all_imports():
             return get_path(b) + [t]
 
     for root, dirs, files in os.walk(current_path):
-        if any(s_d in root for s_d in skip_dirs):
-            continue
+        dirs[:] = [d for d in dirs if not d in skip_dirs]
         path = ".".join(get_path(root))
         for f in filter(lambda f:f.endswith(".py"), files):
             name = f[:-3]
