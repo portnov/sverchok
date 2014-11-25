@@ -219,7 +219,7 @@ class SverchokToolsMenu(bpy.types.Panel):
             layout.row().operator(
                 "node.sverchok_check_for_upgrades", text='Check for new version')
         #       row.prop(tree, 'sv_bake',text=' ')
-            
+        layout.operator("node.sverchok_update_addon2")
         
 
 

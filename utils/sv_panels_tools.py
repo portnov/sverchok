@@ -167,6 +167,53 @@ class SverchokCheckForUpgrades(bpy.types.Operator):
             report({'INFO'}, "Your version {0} is latest.".format(sv_version_local))
         return {'FINISHED'}
 
+sv_dir_name = sverchok.__name__
+import traceback
+import tempfile
+
+class SverchokUpdateAddon2(bpy.types.Operator):
+    """ Sverchok update addon without any browsing and so on. After - press F8 to reload addons """
+    bl_idname = "node.sverchok_update_addon2"
+    bl_label = "Sverchok update addon"
+    bl_options = {'REGISTER'}
+
+    def execute(self, context):
+        bpy.data.window_managers[0].progress_begin(0, 100)
+        bpy.data.window_managers[0].progress_update(20)
+        try:
+            url = 'https://github.com/nortikin/sverchok/archive/master.zip'
+            temp_dir = tempfile.gettempdir()
+            to_path = os.path.join(temp_dir, 'sverchok.zip')
+            zfile = urllib.request.urlretrieve(url, to_path)
+            bpy.data.window_managers[0].progress_update(50)
+        except:
+            traceback.print_exc()
+
+            self.report({'ERROR'}, "Cannot get archive from Internet")
+            bpy.data.window_managers[0].progress_end()
+            return {'CANCELLED'}
+        try:
+            #os.removedirs(os.path.normpath(os.path.join(os.curdir, 'sverchok')))
+            err = 0
+            install_path = os.path.join(bl_addons_path,sv_dir_name)
+            zip_obj = ZipFile(zfile[0])
+            names = [name for name in zip_obj.namelist() if not "docs" in name]
+            zip_obj.extractall(members=names)
+            os.path.join(temp_dir, "sverchok-master")
+            
+            bpy.data.window_managers[0].progress_update(60)
+            
+
+            bpy.data.window_managers[0].progress_update(100)
+            bpy.data.window_managers[0].progress_end()
+            self.report({'INFO'}, "Unzipped, reload addons with F8 button")
+        except:
+            traceback.print_exc()
+
+            self.report({'ERROR'}, "Cannot extract files errno {0}".format(str(err)))
+            bpy.data.window_managers[0].progress_end()
+            return {'CANCELLED'}
+        return {'FINISHED'}
 
 class SverchokUpdateAddon(bpy.types.Operator):
     """ Sverchok update addon without any browsing and so on. After - press F8 to reload addons """
@@ -191,7 +238,9 @@ class SverchokUpdateAddon(bpy.types.Operator):
         try:
             #os.removedirs(os.path.normpath(os.path.join(os.curdir, 'sverchok')))
             err = 0
+            
             ZipFile(file[0]).extractall(path=os.curdir, members=None, pwd=None)
+
             bpy.data.window_managers[0].progress_update(90)
             err = 1
             os.remove(file[0])
