@@ -22,10 +22,12 @@ from collections import defaultdict
 import bpy
 import bmesh
 from mathutils.geometry import intersect_line_line as LineIntersect
+from bpy.props import FloatProperty
 
 from sverchok.node_tree import SverchCustomTreeNode
 from sverchok.utils import cad_module as cm
 from sverchok.utils.sv_bmesh_utils import bmesh_from_pydata
+from sverchok.data_structure import updateNode
 
 ''' helpers '''
 
@@ -110,7 +112,7 @@ def get_intersection_dictionary(bm, edge_indices):
     return d
 
 
-def update_mesh(bm, d):
+def update_mesh(bm, d, node):
     ''' Make new geometry '''
 
     oe = bm.edges
@@ -139,6 +141,9 @@ def update_mesh(bm, d):
 
     # offer a remove doubles pass here.
     #
+    if node.distance > 0:
+        bm_verts = bm.verts[:]
+        bmesh.ops.remove_doubles(bm, verts=bm_verts, dist=node.distance)
 
 
 def unselect_nonintersecting(bm, d_edges, edge_indices):
@@ -156,14 +161,21 @@ class SvIntersectEdgesNode(bpy.types.Node, SverchCustomTreeNode):
     bl_label = 'Intersect Edges'
     bl_icon = 'OUTLINER_OB_EMPTY'
 
+    distance = FloatProperty(
+        name='Distance', description='Remove distance',
+        default=0.001, precision=3, min=0,
+        update=updateNode)
+
     def sv_init(self, context):
         self.inputs.new('VerticesSocket', 'Verts_in', 'Verts_in')
         self.inputs.new('StringsSocket', 'Edges_in', 'Edges_in')
-
+        self.inputs.new('StringsSocket', 'Distance').prop_name = 'distance'
         self.outputs.new('VerticesSocket', 'Verts_out', 'Verts_out')
         self.outputs.new('StringsSocket', 'Edges_out', 'Edges_out')
 
     def draw_buttons(self, context, layout):
+        row = layout.row()
+        row.prop
         pass
 
     def process(self):
@@ -191,7 +203,7 @@ class SvIntersectEdgesNode(bpy.types.Node, SverchCustomTreeNode):
         # store non_intersecting edge sequencer
         add_back = [[i.index for i in edge.verts] for edge in bm.edges if not edge.select]
 
-        update_mesh(bm, d)
+        update_mesh(bm, d, self)
 
         verts_out = [v.co.to_tuple() for v in bm.verts]
         edges_out = [[j.index for j in i.verts] for i in bm.edges]
