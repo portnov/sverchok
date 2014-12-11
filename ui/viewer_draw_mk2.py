@@ -46,7 +46,10 @@ from bgl import (
     GL_POINTS, GL_POINT_SIZE, GL_POINT_SMOOTH, GL_POINT_SMOOTH_HINT,
     GL_LINE, GL_LINES, GL_LINE_STRIP, GL_LINE_LOOP, GL_LINE_STIPPLE,
     GL_POLYGON, GL_POLYGON_STIPPLE, GL_TRIANGLES, GL_QUADS,
-    GL_NICEST, GL_FASTEST, GL_FLAT, GL_SMOOTH, GL_LINE_SMOOTH_HINT)
+    GL_NICEST, GL_FASTEST, GL_FLAT, GL_SMOOTH, GL_LINE_SMOOTH_HINT,
+    #
+    glPolygonOffset, glPolygonMode,
+    GL_POLYGON_OFFSET_FILL, GL_FILL, GL_FRONT_AND_BACK)
 
 # ------------------------------------------------------------------------ #
 # parts taken from  "Math Vis (Console)" addon, author Campbell Barton     #
@@ -232,7 +235,8 @@ def draw_geometry(n_id, options, data_vector, data_polygons, data_matrix, data_e
         edgeholy = GL_LINE_STIPPLE
         edgeline = GL_LINE_STRIP
     else:
-        polyholy = GL_POLYGON
+        # polyholy = GL_POLYGON
+        polyholy = GL_POLYGON_OFFSET_FILL
         edgeholy = GL_LINE
         edgeline = GL_LINES
 
@@ -419,9 +423,11 @@ def draw_callback_view(n_id, cached_view, options):
 
     elif options['draw_list'] == 1:
         the_display_list = options['genlist']
-    
+
     if not 'error' in options:
+        glPolygonOffset(1.0, 1.0)                  #
         glCallList(the_display_list)
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)  #
         glFlush()
 
     # restore to system state
