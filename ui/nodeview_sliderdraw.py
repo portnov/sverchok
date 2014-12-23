@@ -102,7 +102,7 @@ def draw_callback_px(n_id, settings):
 
     def draw_polygon(w, h, x, y, color):
         if w == 0:
-            # in the event the slider touches a side, 
+            # in the event the slider touches a side,
             # one polygon doesn't need to be drawn.
             return
 
@@ -114,26 +114,8 @@ def draw_callback_px(n_id, settings):
         bgl.glEnd()
 
     draw_polygon(w=200, h=40, x=x, y=y, color=rgb2)
-    # polyline = [(0, 0), (200, 0), (200, -40), (0, -40)]
-    # bgl.glColor4f(*rgb2)
-    # bgl.glBegin(bgl.GL_POLYGON)
-    # for pointx, pointy in polyline:
-    #     bgl.glVertex2f(pointx+x, pointy+y)
-    # bgl.glEnd()
-
-    polyline = [(200, 0), (240, 0), (240, -40), (200, -40)]
-    bgl.glColor4f(*rgb3)
-    bgl.glBegin(bgl.GL_POLYGON)
-    for pointx, pointy in polyline:
-        bgl.glVertex2f(pointx+x, pointy+y)
-    bgl.glEnd()
-
-    polyline = [(240, 0), (400, 0), (400, -40), (240, -40)]
-    bgl.glColor4f(*rgb2)
-    bgl.glBegin(bgl.GL_POLYGON)
-    for pointx, pointy in polyline:
-        bgl.glVertex2f(pointx+x, pointy+y)
-    bgl.glEnd()
+    draw_polygon(w=40, h=40, x=x+200, y=y, color=rgb3)
+    draw_polygon(w=160, h=40, x=x+200+40, y=y, color=rgb2)
 
     # ''' draw text '''
     # txt_width, txt_height = blf.dimensions(0, index)
