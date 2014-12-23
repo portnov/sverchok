@@ -141,6 +141,7 @@ def make_node_cats():
         ['RandomNode', 'Random', 'RNDCURVE'],
         ['FloatNode', 'Float'],
         ['IntegerNode', 'Int'],
+        ['SliderNode', 'Multi Slider'],
         ['Float2IntNode', 'Float 2 Int'],
         ['Formula2Node', 'Formula'],
         ['ScalarMathNode', 'Math'],

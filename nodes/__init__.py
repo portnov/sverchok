@@ -139,6 +139,7 @@ nodes_dict = {
         'float_to_int',
         'float',
         'integer',
+        'number_with_slider',
         'random',
         'formula2',
         'scalar',
