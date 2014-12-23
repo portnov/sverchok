@@ -100,12 +100,26 @@ def draw_callback_px(n_id, settings):
     x = loc.x - 400
     y = loc.y
 
-    polyline = [(0, 0), (200, 0), (200, -40), (0, -40)]
-    bgl.glColor4f(*rgb2)
-    bgl.glBegin(bgl.GL_POLYGON)
-    for pointx, pointy in polyline:
-        bgl.glVertex2f(pointx+x, pointy+y)
-    bgl.glEnd()
+    def draw_polygon(w, h, x, y, color):
+        if w == 0:
+            # in the event the slider touches a side, 
+            # one polygon doesn't need to be drawn.
+            return
+
+        polyline = [(x, y), (x + w, y), (x + w, y - h), (x, y - h)]
+        bgl.glColor4f(*color)
+        bgl.glBegin(bgl.GL_POLYGON)
+        for pointx, pointy in polyline:
+            bgl.glVertex2f(pointx, pointy)
+        bgl.glEnd()
+
+    draw_polygon(w=200, h=40, x=x, y=y, color=rgb2)
+    # polyline = [(0, 0), (200, 0), (200, -40), (0, -40)]
+    # bgl.glColor4f(*rgb2)
+    # bgl.glBegin(bgl.GL_POLYGON)
+    # for pointx, pointy in polyline:
+    #     bgl.glVertex2f(pointx+x, pointy+y)
+    # bgl.glEnd()
 
     polyline = [(200, 0), (240, 0), (240, -40), (200, -40)]
     bgl.glColor4f(*rgb3)
