@@ -20,6 +20,19 @@ import bpy
 from bpy.props import IntProperty, FloatProperty, EnumProperty, StringProperty
 from sverchok.node_tree import SverchCustomTreeNode
 from sverchok.data_structure import updateNode
+from sverchok.ui import nodeview_sliderdraw as SD
+
+
+# global somehow.
+sv_slider_parameters = {
+    '0', {
+        'name': 'some_param_name',
+        'type': 'Integer/Float',
+        'value': '0.1/1',
+        'max': 'maxval',
+        'min': 'minval'}
+    # ..
+}
 
 
 opposites = {'Integer': 'Float', 'Float': 'Integer'}
@@ -58,7 +71,7 @@ class SliderNode(bpy.types.Node, SverchCustomTreeNode):
         output = self.outputs[mode]
         output_disable = self.outputs[opposites.get(mode)]
         output.enabled = True
-        output_disable.enabled = False        
+        output_disable.enabled = False
 
     mode_options = [
         ("Integer", "Integer", "", 0),
