@@ -82,7 +82,7 @@ class SliderNode(bpy.types.Node, SverchCustomTreeNode):
         row.prop(self, 'number_mode')
 
         row = layout.row(align=True)
-        if self.number_mode == 'INT':
+        if self.number_mode == 'Integer':
             row.prop(self, 'imax')
             row.prop(self, 'imin')
         else:
