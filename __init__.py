@@ -84,8 +84,8 @@ utils_modules = [
 ui_modules = [
     "color_def", "sv_IO_panel", "sv_panels", "nodeview_space_menu",
     # bgl modules
-    "viewer_draw",  "viewer_draw_mk2", "nodeview_bgl_viewer_draw",
-    "index_viewer_draw"
+    "viewer_draw", "viewer_draw_mk2", "nodeview_bgl_viewer_draw",
+    "index_viewer_draw", "nodeview_sliderdraw"
 ]
 
 # modules and pkg path, nodes are done separately.

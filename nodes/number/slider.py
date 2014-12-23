@@ -19,20 +19,20 @@
 import bpy
 from bpy.props import IntProperty, FloatProperty, EnumProperty, StringProperty
 from sverchok.node_tree import SverchCustomTreeNode
-from sverchok.data_structure import updateNode
+from sverchok.data_structure import updateNode, node_id
 from sverchok.ui import nodeview_sliderdraw as SD
 
 
 # global somehow.
-sv_slider_parameters = {
-    '0', {
-        'name': 'some_param_name',
-        'type': 'Integer/Float',
-        'value': '0.1/1',
-        'max': 'maxval',
-        'min': 'minval'}
-    # ..
-}
+# sv_slider_parameters = {
+#     '0', {
+#         'name': 'some_param_name',
+#         'type': 'Integer/Float',
+#         'value': '0.1/1',
+#         'max': 'maxval',
+#         'min': 'minval'}
+#     # ..
+# }
 
 
 opposites = {'Integer': 'Float', 'Float': 'Integer'}
@@ -44,6 +44,7 @@ class SliderNode(bpy.types.Node, SverchCustomTreeNode):
     bl_label = 'Slider Node'
     bl_icon = 'OUTLINER_OB_EMPTY'
 
+    n_id = StringProperty(default='')
     number_repr = StringProperty(default="")
 
     imax = IntProperty(
@@ -107,11 +108,25 @@ class SliderNode(bpy.types.Node, SverchCustomTreeNode):
         self.outputs.new('StringsSocket', "Float", "Float").enabled = False
 
     def process(self):
+        n_id = node_id(self)
         found_num = 20
         mode = self.number_mode
         output = self.outputs[mode]
+
+        SD.callback_disable(n_id)
         if output.is_linked:
+            draw_data = {
+                'location': self.location,
+                'width': self.width
+            }.copy()
+            SD.callback_enable(n_id, draw_data)
             output.sv_set([[found_num]])
+
+    def free(self):
+        SD.callback_disable(node_id(self))
+
+    def copy(self, node):
+        self.n_id = ''
 
 
 def register():
