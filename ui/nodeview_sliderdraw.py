@@ -100,6 +100,11 @@ def draw_callback_px(n_id, settings):
     x = loc.x - 400
     y = loc.y
 
+    nh = 30  # nib height
+    nw = 40  # nib width
+    sh = 30  # slider height
+    sw = 400  # slider width
+
     def draw_polygon(w, h, x, y, color):
         if w == 0:
             # in the event the slider touches a side,
@@ -113,9 +118,9 @@ def draw_callback_px(n_id, settings):
             bgl.glVertex2f(pointx, pointy)
         bgl.glEnd()
 
-    draw_polygon(w=200, h=40, x=x, y=y, color=rgb2)
-    draw_polygon(w=40, h=40, x=x+200, y=y, color=rgb3)
-    draw_polygon(w=160, h=40, x=x+200+40, y=y, color=rgb2)
+    draw_polygon(w=200, h=sh, x=x, y=y, color=rgb2)
+    draw_polygon(w=40, h=nh, x=x+200, y=y, color=rgb3)
+    draw_polygon(w=160, h=sh, x=x+200+40, y=y, color=rgb2)
 
     # ''' draw text '''
     # txt_width, txt_height = blf.dimensions(0, index)
