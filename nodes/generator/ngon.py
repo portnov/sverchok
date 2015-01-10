@@ -43,8 +43,8 @@ class SvNGonNode(bpy.types.Node, SverchCustomTreeNode):
     sides_ = IntProperty(name='N Sides', description='Number of polygon sides',
                         default=5, min=3,
                         update=updateNode)
-    rand_seed_ = FloatProperty(name='Seed', description='Random seed',
-                        default=0.0,
+    rand_seed_ = IntProperty(name='Seed', description='Random seed',
+                        default=0,
                         update=updateNode)
     rand_r_ = FloatProperty(name='RandomR', description='Radius randomization amplitude',
                         default=0.0, min=0.0,

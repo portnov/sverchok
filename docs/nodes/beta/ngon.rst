@@ -57,7 +57,7 @@ All parameters can be given by the node or an external input.
 +----------------+---------------+-------------+-------------------------------------------------------------+
 | **RandomPhi**  | Float         | 0.0         | Amplitude of randomizaiton of angles. In radians.           |
 +----------------+---------------+-------------+-------------------------------------------------------------+
-| **Seed**       | Float         | 0.0         | Random seed. Affects output only when ``RandomR`` != 0 or   |
+| **Seed**       | Int           | 0           | Random seed. Affects output only when ``RandomR`` != 0 or   |
 |                |               |             | ``RandomPhi`` != 0.                                         |
 +----------------+---------------+-------------+-------------------------------------------------------------+
 | **Shift**      | Int           | 0           | Also known as "star factor". When this is zero, each vertex |
@@ -76,9 +76,10 @@ This node has the following outputs:
 - **Polygons**
 
 If ``Shift`` input is not zero, then ``Polygons`` output will be empty - this
-node does not create degenerated polygons.
+node does not create degenerated polygons. However, it can produce non-convex polygons, with big enough
+values of ``RandomR`` and/or ``RandomPhi``.
 
-Depending on the type of the inputs, the node will generate only one or multiples independant circles. 
+Depending on the type of the inputs, the node will generate only one or multiples independant polygons. 
 
 Examples
 --------
@@ -102,3 +103,4 @@ Sides=7, Shift=1, RandomR=0.24, RandomPhi=0.15:
 Sides=29, Shift=9, RandomR=0, RandomPhi=0:
 
 .. image:: https://cloud.githubusercontent.com/assets/284644/5680575/bd1095e8-9830-11e4-8942-a281b6ab8a8d.png
+
