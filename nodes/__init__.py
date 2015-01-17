@@ -54,6 +54,7 @@ nodes_dict = {
         'image',
         'line',
         'plane',
+        'hexgrid',
         'random_vector',
         'script',
         'script_mk2',
