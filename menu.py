@@ -221,6 +221,7 @@ def make_node_cats():
         ['SvPipeNode',          'Pipe'],
         ["SvOffsetNode",        "Offset"],
         ["SvListDecomposeNode", "List Decompose"],
+        ["ListRotateNode", "List Rotate"],
         ["SvWafelNode",         "Wafel"],
         ["SvFormulaShapeNode",  "Formula shape", "IPO"],
         ["SvScriptNodeMK2",     "Script 2"],

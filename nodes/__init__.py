@@ -89,6 +89,7 @@ nodes_dict = {
         'start_end',
         'item',
         'reverse',
+        'rotate',
         'shuffle',
         'sort',
         'flip'
