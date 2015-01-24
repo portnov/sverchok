@@ -77,6 +77,7 @@ class SvBevelNode(bpy.types.Node, SverchCustomTreeNode):
         self.inputs.new('StringsSocket', 'Edges', 'Edges')
         self.inputs.new('StringsSocket', 'Polygons', 'Polygons')
         self.inputs.new('StringsSocket', 'BevelEdges')
+        self.inputs.new('StringsSocket', 'VertexMask')
         self.inputs.new('StringsSocket', "Offset").prop_name = "offset_"
         self.inputs.new('StringsSocket', "Segments").prop_name = "segments_"
         self.inputs.new('StringsSocket', "Profile").prop_name = "profile_"
@@ -104,29 +105,39 @@ class SvBevelNode(bpy.types.Node, SverchCustomTreeNode):
         segments_s = self.inputs['Segments'].sv_get()[0]
         profiles_s = self.inputs['Profile'].sv_get()[0]
         bevel_edges_s = self.inputs['BevelEdges'].sv_get(default=[[]])
+        vertex_masks_s = self.inputs['VertexMask'].sv_get(default=[[]])
 
         result_vertices = []
         result_edges = []
         result_faces = []
         result_bevel_faces = []
 
-        meshes = match_long_repeat([vertices_s, edges_s, faces_s, bevel_edges_s, offsets_s, segments_s, profiles_s])
+        meshes = match_long_repeat([vertices_s, edges_s, faces_s, vertex_masks_s, bevel_edges_s, offsets_s, segments_s, profiles_s])
 
-        for vertices, edges, faces, bevel_edges, offset, segments, profile in zip(*meshes):
+        for vertices, edges, faces, masks, bevel_edges, offset, segments, profile in zip(*meshes):
 
             bm = bmesh_from_pydata(vertices, edges, faces)
-            print(bevel_edges)
+
+            if masks:
+                fullList(masks, len(vertices))
+                b_vertices = [v for (mask, v) in zip(masks, bm.verts) if mask]
+                b_idxs = [i for (i,mask) in enumerate(masks) if mask]
+                b_faces = [f for f in bm.faces if any([v.index in b_idxs for v in f.verts])]
+            else:
+                b_vertices = bm.verts
+                b_faces = bm.faces
+
+            print(b_vertices)
 
             if bevel_edges:
                 b_edges = []
                 for edge in bevel_edges:
                     b_edge = [e for e in bm.edges if set([v.index for v in e.verts]) == set(edge)]
                     b_edges.append(b_edge[0])
-                print(b_edges)
             else:
                 b_edges = bm.edges
 
-            geom = list(bm.verts) + list(b_edges) + list(bm.faces)
+            geom = list(b_vertices) + list(b_edges) + list(b_faces)
             bevel_faces = bmesh.ops.bevel(bm, geom=geom, offset=offset,
                             offset_type=int(self.offsetType), segments=segments,
                             profile=profile, vertex_only=self.vertexOnly,
