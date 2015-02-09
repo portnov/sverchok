@@ -16,13 +16,14 @@
 #
 # ##### END GPL LICENSE BLOCK #####
 
+from math import pi, degrees, floor, ceil, copysign
 import numpy as np
 import bpy
 from bpy.props import BoolProperty, IntProperty, FloatProperty, EnumProperty
-from mathutils import Matrix
+from mathutils import Matrix, Vector
 
 from sverchok.node_tree import SverchCustomTreeNode, MatrixSocket, StringsSocket
-from sverchok.data_structure import (updateNode, fullList,
+from sverchok.data_structure import (updateNode, fullList, match_long_repeat,
                             Matrix_listing, Matrix_generate, match_cross,
                             SvGetSocketAnyType, SvSetSocketAnyType)
 
@@ -48,6 +49,9 @@ def autorotate(e1, xx):
     v = u.normalized()
     q = householder(v)
     return q
+
+def Matrix_degenerate(ms):
+    return [[ j[:] for j in M ] for M in ms]
 
 class Multiply(object):
     inputs = [
@@ -130,7 +134,7 @@ class Eigens(object):
         ]
     outputs = [
             ('StringsSocket', 'EigenValues'),
-            ('VertexSocket', 'EigenVectors')
+            ('VerticesSocket', 'EigenVectors')
         ]
     
     @staticmethod
@@ -143,7 +147,7 @@ class Eigens(object):
 
 class Householder(object):
     inputs = [
-            ('VertexSocket', 'Vector')
+            ('VerticesSocket', 'Vector')
         ]
     
     outputs = [
@@ -152,13 +156,13 @@ class Householder(object):
 
     @staticmethod
     def process(u):
-        m = householder(u)
+        m = householder(Vector(u))
         return [m]
 
 class Autorotate_Householder(object):
     inputs = [
-            ('VertexSocket', 'Vector'),
-            ('VertexSocket', 'TargetVector')
+            ('VerticesSocket', 'Vector'),
+            ('VerticesSocket', 'TargetVector')
         ]
 
     outputs = [
@@ -166,14 +170,18 @@ class Autorotate_Householder(object):
         ]
 
     @staticmethod
-    def process(vector, target):
-        m = autorotate(target, vector)
-        return [m]
+    def process(vectors, targets):
+        xs = match_long_repeat([vectors, targets])
+        result = []
+        for vector, target in zip(*xs):
+            m = autorotate(Vector(target), Vector(vector))
+            result.append(m)
+        return [result]
 
 class MatrixMathNode(bpy.types.Node, SverchCustomTreeNode):
     ''' Interpolate between two matrices '''
     bl_idname = 'MatrixMathNode'
-    bl_label = 'Matrix Interpolation'
+    bl_label = 'Matrix Math'
     bl_icon = 'OUTLINER_OB_EMPTY'
 
     modes = [
@@ -231,6 +239,8 @@ class MatrixMathNode(bpy.types.Node, SverchCustomTreeNode):
         outputs = zip(*outputs)
         for (ocls,oname), out in zip(cls.outputs, outputs):
             if self.outputs[oname].is_linked:
+                if ocls == 'MatrixSocket':
+                    out = [Matrix_degenerate(m) for m in out]
                 self.outputs[oname].sv_set(out)
 
 def register():
