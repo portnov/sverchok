@@ -27,6 +27,19 @@ from sverchok.data_structure import (updateNode, fullList, match_long_repeat,
                             Matrix_listing, Matrix_generate, match_cross,
                             SvGetSocketAnyType, SvSetSocketAnyType)
 
+def is_matrix(lst):
+    return len(lst) == 4 and len(lst[0]) == 4
+
+def is_matrix_list(x):
+    return type(x) == list and isinstance(x[0], Matrix)
+
+def listify(m1,m2):
+    if isinstance(m1, Matrix):
+        m1 = [m1]
+    if isinstance(m2, Matrix):
+        m2 = [m2]
+    return m1, m2
+
 def householder(u):
     ''' Householder reflection matrix '''
     x,y,z = u[0], u[1], u[2]
@@ -34,7 +47,7 @@ def householder(u):
     h = Matrix() - 2*m
     return h
 
-def autorotate(e1, xx):
+def autorotate_householder(e1, xx):
     ''' A matrix of transformation which will transform xx vector into e1. 
     See http://en.wikipedia.org/wiki/QR_decomposition '''
 
@@ -50,8 +63,19 @@ def autorotate(e1, xx):
     q = householder(v)
     return q
 
+def autorotate_quaternion(e1, xx):
+    rot = xx.rotation_difference(e1).to_matrix().to_4x4()
+    return rot
+
 def Matrix_degenerate(ms):
     return [[ j[:] for j in M ] for M in ms]
+
+def matched(fn, m1, m2):
+    m1,m2 = listify(m1,m2)
+    result = []
+    for mx1, mx2 in zip(*match_long_repeat([m1,m2])):
+        result.append(fn(mx1,mx2))
+    return result
 
 class Multiply(object):
     inputs = [
@@ -64,7 +88,8 @@ class Multiply(object):
     
     @staticmethod
     def process(m1, m2):
-        return [m1 * m2]
+        result = matched(lambda mx1,mx2: mx1*mx2, m1, m2)
+        return [result]
 
 class Add(object):
     inputs = [
@@ -77,7 +102,8 @@ class Add(object):
     
     @staticmethod
     def process(m1, m2):
-        return [m1 + m2]
+        result = matched(lambda mx1,mx2: mx1+mx2, m1, m2)
+        return [result]
 
 class QR(object):
     inputs = [
@@ -174,7 +200,26 @@ class Autorotate_Householder(object):
         xs = match_long_repeat([vectors, targets])
         result = []
         for vector, target in zip(*xs):
-            m = autorotate(Vector(target), Vector(vector))
+            m = autorotate_householder(Vector(target), Vector(vector))
+            result.append(m)
+        return [result]
+
+class Autorotate_Quaternion(object):
+    inputs = [
+            ('VerticesSocket', 'Vector'),
+            ('VerticesSocket', 'TargetVector')
+        ]
+
+    outputs = [
+            ('MatrixSocket', 'Matrix')
+        ]
+
+    @staticmethod
+    def process(vectors, targets):
+        xs = match_long_repeat([vectors, targets])
+        result = []
+        for vector, target in zip(*xs):
+            m = autorotate_quaternion(Vector(target), Vector(vector))
             result.append(m)
         return [result]
 
@@ -193,6 +238,7 @@ class MatrixMathNode(bpy.types.Node, SverchCustomTreeNode):
         ('Invert', "Invert", "Inverse matrix", 6),
         ('Householder', "Householder", "Householder reflection", 7),
         ('Autorotate_Householder', "Autorotate - Householder", "Calculate rotation to rotate one vector to another", 8),
+        ('Autorotate_Quaternion', "Autorotate - Quaternions", "Calculate rotation to rotate one vector to another", 8),
     ]
 
     def update_mode(self, context):
@@ -227,7 +273,10 @@ class MatrixMathNode(bpy.types.Node, SverchCustomTreeNode):
         for icls, iname in cls.inputs:
             input = self.inputs[iname].sv_get(default=[[]]) 
             if icls == 'MatrixSocket':
-                input = Matrix_generate(input)
+                if is_matrix(input[0]):
+                    input = [Matrix_generate(input)]
+                else:
+                    input = [Matrix_generate(matrices) for matrices in input]
             inputs.append(input)
 
         parameters = match_cross(inputs)
