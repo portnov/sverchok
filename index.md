@@ -169,6 +169,7 @@
     MatrixShearNode
     MatrixInterpolationNode
     SvMatrixApplyJoinNode
+    MatrixMathNode
 
 ## Logic
     SvLogicNode
