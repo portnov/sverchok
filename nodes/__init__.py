@@ -1,4 +1,3 @@
-<<<<<<< 5c052118b8b1f42c7d4bc8821ad3ca855d1ddde0
 import os
 from os.path import dirname
 from os.path import basename

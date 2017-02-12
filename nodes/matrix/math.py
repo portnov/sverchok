@@ -224,7 +224,7 @@ class Autorotate_Quaternion(object):
         return [result]
 
 class MatrixMathNode(bpy.types.Node, SverchCustomTreeNode):
-    ''' Interpolate between two matrices '''
+    '''Matrix maths'''
     bl_idname = 'MatrixMathNode'
     bl_label = 'Matrix Math'
     bl_icon = 'OUTLINER_OB_EMPTY'
