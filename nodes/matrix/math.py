@@ -238,7 +238,7 @@ class MatrixMathNode(bpy.types.Node, SverchCustomTreeNode):
         ('Invert', "Invert", "Inverse matrix", 6),
         ('Householder', "Householder", "Householder reflection", 7),
         ('Autorotate_Householder', "Autorotate - Householder", "Calculate rotation to rotate one vector to another", 8),
-        ('Autorotate_Quaternion', "Autorotate - Quaternions", "Calculate rotation to rotate one vector to another", 8),
+        ('Autorotate_Quaternion', "Autorotate - Quaternions", "Calculate rotation to rotate one vector to another", 9),
     ]
 
     def update_mode(self, context):
