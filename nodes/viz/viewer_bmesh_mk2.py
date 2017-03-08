@@ -21,7 +21,7 @@
 import itertools
 
 import bpy
-from bpy.props import BoolProperty, StringProperty, BoolVectorProperty
+from bpy.props import BoolProperty, StringProperty, BoolVectorProperty, IntVectorProperty, CollectionProperty, IntProperty
 from mathutils import Matrix, Vector
 
 from sverchok.node_tree import SverchCustomTreeNode
@@ -179,6 +179,23 @@ class SvBmeshViewOp2(bpy.types.Operator):
                 obj.select = n.select_state_mesh
             n.select_state_mesh = not n.select_state_mesh
 
+        elif type_op == 'get_selection':
+            print(dir(n.selected_verts))
+            n.selected_verts.clear()
+            n.selected_edges.clear()
+            n.selected_faces.clear()
+            if objs:
+                obj = objs[0]
+                verts = [v.index for v in obj.data.vertices if v.select]
+                edges = [e.index for e in obj.data.edges if e.select]
+                faces = [f.index for f in obj.data.polygons if f.select]
+                print("Verts: " + str(verts))
+                print("Edges: " + str(edges))
+                print("Faces: " + str(faces))
+                append_indices(n.selected_verts, verts)
+                append_indices(n.selected_edges, edges)
+                append_indices(n.selected_faces, faces)
+
         elif type_op == 'random_mesh_name':
             n.basemesh_name = get_random_init()
 
@@ -206,6 +223,16 @@ class SvBmeshViewOp2(bpy.types.Operator):
         self.hide_unhide(context, self.fn_name)
         return {'FINISHED'}
 
+class SvBmeshSelectionIndex(bpy.types.PropertyGroup):
+    index = IntProperty(name="index")
+
+def append_indices(prop, indices):
+    for idx in indices:
+        item = prop.add()
+        item.index = idx
+
+def get_indices(prop):
+    return [item.index for item in prop]
 
 class SvBmeshViewerNodeMK2(bpy.types.Node, SverchCustomTreeNode):
 
@@ -270,6 +297,13 @@ class SvBmeshViewerNodeMK2(bpy.types.Node, SverchCustomTreeNode):
         default=False,
         description='Allows mesh.transform(matrix) operation, quite fast!')
 
+    selected_verts = CollectionProperty(
+            name='selected_verts', type=SvBmeshSelectionIndex)
+    selected_edges = CollectionProperty(
+            name='selected_edges', type=SvBmeshSelectionIndex)
+    selected_faces = CollectionProperty(
+            name='selected_faces', type=SvBmeshSelectionIndex)
+
     def sv_init(self, context):
         gai = bpy.context.scene.SvGreekAlphabet_index
         self.basemesh_name = greek_alphabet[gai]
@@ -280,7 +314,10 @@ class SvBmeshViewerNodeMK2(bpy.types.Node, SverchCustomTreeNode):
         self.inputs.new('StringsSocket', 'faces', 'faces')
         self.inputs.new('MatrixSocket', 'matrix', 'matrix')
 
-        self.outputs.new('SvObjectSocket', "Objects")
+        self.outputs.new('SvObjectSocket', "Objects", "Objects")
+        self.outputs.new("StringsSocket", "Verts mask", "verts")
+        self.outputs.new("StringsSocket", "Edges mask", "edges")
+        self.outputs.new("StringsSocket", "Faces mask", "faces")
 
     def draw_buttons(self, context, layout):
         view_icon = 'BLENDER' if self.activate else 'ERROR'
@@ -317,6 +354,9 @@ class SvBmeshViewerNodeMK2(bpy.types.Node, SverchCustomTreeNode):
             row = col.row(align=True)
             row.scale_y = 1.62
             row.operator(sh, text='Select Toggle').fn_name = 'mesh_select'
+
+            row = col.row(align=True)
+            row.operator(sh, text='Get Selection').fn_name = 'get_selection'
 
             col.separator()
             row = col.row(align=True)
@@ -368,63 +408,106 @@ class SvBmeshViewerNodeMK2(bpy.types.Node, SverchCustomTreeNode):
         finally:
             return j
 
+    def get_selected_vertices(self):
+        verts = self.inputs['vertices'].sv_get(default=[])
+        result = []
+        if len(verts) > 0 and isinstance(verts[0], list):
+            for i in range(len(verts[0])):
+                if i in get_indices(self.selected_verts):
+                    result.append(True)
+                else:
+                    result.append(False)
+        return [result]
+
+    def get_selected_edges(self):
+        edges = self.inputs['edges'].sv_get(default=[])
+        result = []
+        if len(edges) > 0 and isinstance(edges[0], list):
+            for i in range(len(edges[0])):
+                if i in get_indices(self.selected_edges):
+                    result.append(True)
+                else:
+                    result.append(False)
+        return [result]
+
+    def get_selected_faces(self):
+        faces = self.inputs['faces'].sv_get(default=[])
+        result = []
+        if len(faces) > 0 and isinstance(faces[0], list):
+            for i in range(len(faces[0])):
+                if i in get_indices(self.selected_faces):
+                    result.append(True)
+                else:
+                    result.append(False)
+        return [result]
+
     def process(self):
 
-        if not self.activate:
-            return
+        print("{}: Selected verts: {}".format(self.name, get_indices(self.selected_verts)))
+        print("{}: Selected edges: {}".format(self.name, get_indices(self.selected_edges)))
+        print("{}: Selected faces: {}".format(self.name, get_indices(self.selected_faces)))
 
-        mverts, *mrest = self.get_geometry_from_sockets()
+        if self.outputs['Verts mask'].is_linked:
+            self.outputs['Verts mask'].sv_set(self.get_selected_vertices())
+        if self.outputs['Edges mask'].is_linked:
+            self.outputs['Edges mask'].sv_set(self.get_selected_edges())
+        if self.outputs['Faces mask'].is_linked:
+            self.outputs['Faces mask'].sv_set(self.get_selected_faces())
 
-        def get_edges_faces_matrices(obj_index):
-            for geom in mrest:
-                yield self.get_structure(geom, obj_index)
+        if self.activate:
 
-        # extend all non empty lists to longest of mverts or *mrest
-        maxlen = max(len(mverts), *(map(len, mrest)))
-        fullList(mverts, maxlen)
-        for idx in range(3):
-            if mrest[idx]:
-                fullList(mrest[idx], maxlen)
+            mverts, *mrest = self.get_geometry_from_sockets()
 
-        if self.merge:
-            obj_index = 0
+            def get_edges_faces_matrices(obj_index):
+                for geom in mrest:
+                    yield self.get_structure(geom, obj_index)
 
-            def keep_yielding():
-                # this will yield all in one go.
-                for idx, Verts in enumerate(mverts):
+            # extend all non empty lists to longest of mverts or *mrest
+            maxlen = max(len(mverts), *(map(len, mrest)))
+            fullList(mverts, maxlen)
+            for idx in range(3):
+                if mrest[idx]:
+                    fullList(mrest[idx], maxlen)
+
+            if self.merge:
+                obj_index = 0
+
+                def keep_yielding():
+                    # this will yield all in one go.
+                    for idx, Verts in enumerate(mverts):
+                        if not Verts:
+                            continue
+
+                        data = get_edges_faces_matrices(idx)
+                        yield (Verts, data)
+
+                yielder_object = keep_yielding()
+                make_bmesh_geometry_merged(self, obj_index, bpy.context, yielder_object)
+
+            else:
+                for obj_index, Verts in enumerate(mverts):
                     if not Verts:
                         continue
 
-                    data = get_edges_faces_matrices(idx)
-                    yield (Verts, data)
+                    data = get_edges_faces_matrices(obj_index)
+                    make_bmesh_geometry(self, obj_index, bpy.context, Verts, *data)
 
-            yielder_object = keep_yielding()
-            make_bmesh_geometry_merged(self, obj_index, bpy.context, yielder_object)
+            self.remove_non_updated_objects(obj_index)
 
-        else:
-            for obj_index, Verts in enumerate(mverts):
-                if not Verts:
-                    continue
+            objs = self.get_children()
 
-                data = get_edges_faces_matrices(obj_index)
-                make_bmesh_geometry(self, obj_index, bpy.context, Verts, *data)
+            if self.grouping:
+                self.to_group(objs)
 
-        self.remove_non_updated_objects(obj_index)
+            # truthy if self.material is in .materials
+            if bpy.data.materials.get(self.material):
+                self.set_corresponding_materials(objs)
 
-        objs = self.get_children()
+            if self.autosmooth:
+                self.set_autosmooth(objs)
 
-        if self.grouping:
-            self.to_group(objs)
-
-        # truthy if self.material is in .materials
-        if bpy.data.materials.get(self.material):
-            self.set_corresponding_materials(objs)
-
-        if self.autosmooth:
-            self.set_autosmooth(objs)
-
-        if self.outputs[0].is_linked:
-            self.outputs[0].sv_set(objs)
+            if self.outputs[0].is_linked:
+                self.outputs[0].sv_set(objs)
 
     def get_children(self):
         objects = bpy.data.objects
@@ -482,11 +565,13 @@ class SvBmeshViewerNodeMK2(bpy.types.Node, SverchCustomTreeNode):
 
 
 def register():
+    bpy.utils.register_class(SvBmeshSelectionIndex)
     bpy.utils.register_class(SvBmeshViewerNodeMK2)
     bpy.utils.register_class(SvBmeshViewOp2)
 
 
 def unregister():
+    bpy.utils.unregister_class(SvBmeshSelectionIndex)
     bpy.utils.unregister_class(SvBmeshViewerNodeMK2)
     bpy.utils.unregister_class(SvBmeshViewOp2)
 
