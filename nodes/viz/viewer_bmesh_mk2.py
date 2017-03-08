@@ -180,18 +180,18 @@ class SvBmeshViewOp2(bpy.types.Operator):
             n.select_state_mesh = not n.select_state_mesh
 
         elif type_op == 'get_selection':
-            n.selected_verts.clear()
-            n.selected_edges.clear()
-            n.selected_faces.clear()
             if objs:
                 obj = objs[0]
                 verts = [v.index for v in obj.data.vertices if v.select]
-                edges = [e.index for e in obj.data.edges if e.select]
-                faces = [f.index for f in obj.data.polygons if f.select]
+                edges = [e.key for e in obj.data.edges if e.select]
+                faces = [list(f.vertices) for f in obj.data.polygons if f.select]
                 print("Currently selected are: {} verts, {} edges, {} faces".format(len(verts), len(edges), len(faces)))
-                append_indices(n.selected_verts, verts)
-                append_indices(n.selected_edges, edges)
-                append_indices(n.selected_faces, faces)
+                #print("Selected verts: " + str(verts))
+                #print("Selected edges: " + str(edges))
+                #print("Selected faces: " + str(faces))
+                set_indices(n.selected_verts, verts)
+                set_topo(n.selected_edges, edges)
+                set_topo(n.selected_faces, faces)
 
         elif type_op == 'random_mesh_name':
             n.basemesh_name = get_random_init()
@@ -223,13 +223,40 @@ class SvBmeshViewOp2(bpy.types.Operator):
 class SvBmeshSelectionIndex(bpy.types.PropertyGroup):
     index = IntProperty(name="index")
 
-def append_indices(prop, indices):
+class SvBmeshTopo(bpy.types.PropertyGroup):
+    vertices = CollectionProperty(name="vertices", type=SvBmeshSelectionIndex)
+
+def set_indices(prop, indices):
+    # prop : Collection(SvBmeshSelectionIndex)
+    prop.clear()
     for idx in indices:
         item = prop.add()
         item.index = idx
 
+def set_topo(prop, topo):
+    # prop : Collection(SvBmeshTopo)
+    prop.clear()
+    for indices in topo:
+        # item : SvBmeshTopo
+        item = prop.add()
+        set_indices(item.vertices, indices)
+
 def get_indices(prop):
+    # prop : Collection(SvBmeshSelectionIndex)
     return [item.index for item in prop]
+
+def get_topo(prop):
+    # prop : Collection(SvBmeshTopo)
+    return [get_indices(item.vertices) for item in prop]
+
+def find_topo(prop, topo):
+    # prop : Collection(SvBmeshTopo)
+    # topo : edge or face (i.e. [1,2] or [1,2,3])
+    for idx, vertex_indices in enumerate(get_topo(prop)):
+        # order of indices can be different, but we assume [1,2] == [2,1]
+        if set(vertex_indices) == set(topo):
+            return idx
+    return None
 
 class SvBmeshViewerNodeMK2(bpy.types.Node, SverchCustomTreeNode):
 
@@ -294,12 +321,16 @@ class SvBmeshViewerNodeMK2(bpy.types.Node, SverchCustomTreeNode):
         default=False,
         description='Allows mesh.transform(matrix) operation, quite fast!')
 
+    # For selected vertices, we can store only indices
     selected_verts = CollectionProperty(
             name='selected_verts', type=SvBmeshSelectionIndex)
+    # For edges and faces, we have to store basically edges/faces themselves,
+    # i.e. tuples of corresponding indices.
+    # This is because bmesh does not save the same order of edges/faces.
     selected_edges = CollectionProperty(
-            name='selected_edges', type=SvBmeshSelectionIndex)
+            name='selected_edges', type=SvBmeshTopo)
     selected_faces = CollectionProperty(
-            name='selected_faces', type=SvBmeshSelectionIndex)
+            name='selected_faces', type=SvBmeshTopo)
 
     def sv_init(self, context):
         gai = bpy.context.scene.SvGreekAlphabet_index
@@ -405,7 +436,7 @@ class SvBmeshViewerNodeMK2(bpy.types.Node, SverchCustomTreeNode):
         finally:
             return j
 
-    def get_selected_vertices(self):
+    def get_selected_vertex_mask(self):
         verts = self.inputs['vertices'].sv_get(default=[])
         result = []
         if len(verts) > 0 and isinstance(verts[0], list):
@@ -416,40 +447,55 @@ class SvBmeshViewerNodeMK2(bpy.types.Node, SverchCustomTreeNode):
                     result.append(False)
         return [result]
 
-    def get_selected_edges(self):
+    def get_selected_vertices(self):
+        verts = self.inputs['vertices'].sv_get(default=[])
+        result = []
+        if len(verts) > 0 and isinstance(verts[0], list):
+            result = get_indices(self.selected_verts)
+        return [result]
+
+    def get_selected_edge_mask(self):
         edges = self.inputs['edges'].sv_get(default=[])
         result = []
         if len(edges) > 0 and isinstance(edges[0], list):
-            for i in range(len(edges[0])):
-                if i in get_indices(self.selected_edges):
+            for edge in edges[0]:
+                # Here `edge' is item of edges list from node input 
+                # We need to know if it is selected
+                if find_topo(self.selected_edges, edge) is not None:
                     result.append(True)
                 else:
                     result.append(False)
         return [result]
 
-    def get_selected_faces(self):
+    def get_selected_face_mask(self):
         faces = self.inputs['faces'].sv_get(default=[])
         result = []
         if len(faces) > 0 and isinstance(faces[0], list):
-            for i in range(len(faces[0])):
-                if i in get_indices(self.selected_faces):
+            for face in faces[0]:
+                # Here `face' is item of faces list from node input 
+                # We need to know if it is selected
+                if find_topo(self.selected_faces, face) is not None:
                     result.append(True)
                 else:
                     result.append(False)
+        return [result]
+
+    def get_selected_edges(self):
+        result = get_topo(self.selected_edges)
         return [result]
 
     def process(self):
 
-        #print("{}: Selected verts: {}".format(self.name, get_indices(self.selected_verts)))
-        #print("{}: Selected edges: {}".format(self.name, get_indices(self.selected_edges)))
-        #print("{}: Selected faces: {}".format(self.name, get_indices(self.selected_faces)))
+        #print("{}: Selected verts: {}".format(self.name, self.get_selected_vertices()))
+        #print("{}: Selected edges: {}".format(self.name, self.get_selected_edges()))
+        #print("{}: Selected faces: {}".format(self.name, self.get_selected_face_mask()))
 
         if self.outputs['Verts mask'].is_linked:
-            self.outputs['Verts mask'].sv_set(self.get_selected_vertices())
+            self.outputs['Verts mask'].sv_set(self.get_selected_vertex_mask())
         if self.outputs['Edges mask'].is_linked:
-            self.outputs['Edges mask'].sv_set(self.get_selected_edges())
+            self.outputs['Edges mask'].sv_set(self.get_selected_edge_mask())
         if self.outputs['Faces mask'].is_linked:
-            self.outputs['Faces mask'].sv_set(self.get_selected_faces())
+            self.outputs['Faces mask'].sv_set(self.get_selected_face_mask())
 
         if self.activate:
 
@@ -563,12 +609,14 @@ class SvBmeshViewerNodeMK2(bpy.types.Node, SverchCustomTreeNode):
 
 def register():
     bpy.utils.register_class(SvBmeshSelectionIndex)
+    bpy.utils.register_class(SvBmeshTopo)
     bpy.utils.register_class(SvBmeshViewerNodeMK2)
     bpy.utils.register_class(SvBmeshViewOp2)
 
 
 def unregister():
     bpy.utils.unregister_class(SvBmeshSelectionIndex)
+    bpy.utils.unregister_class(SvBmeshTopo)
     bpy.utils.unregister_class(SvBmeshViewerNodeMK2)
     bpy.utils.unregister_class(SvBmeshViewOp2)
 
