@@ -180,7 +180,6 @@ class SvBmeshViewOp2(bpy.types.Operator):
             n.select_state_mesh = not n.select_state_mesh
 
         elif type_op == 'get_selection':
-            print(dir(n.selected_verts))
             n.selected_verts.clear()
             n.selected_edges.clear()
             n.selected_faces.clear()
@@ -189,9 +188,7 @@ class SvBmeshViewOp2(bpy.types.Operator):
                 verts = [v.index for v in obj.data.vertices if v.select]
                 edges = [e.index for e in obj.data.edges if e.select]
                 faces = [f.index for f in obj.data.polygons if f.select]
-                print("Verts: " + str(verts))
-                print("Edges: " + str(edges))
-                print("Faces: " + str(faces))
+                print("Currently selected are: {} verts, {} edges, {} faces".format(len(verts), len(edges), len(faces)))
                 append_indices(n.selected_verts, verts)
                 append_indices(n.selected_edges, edges)
                 append_indices(n.selected_faces, faces)
@@ -443,9 +440,9 @@ class SvBmeshViewerNodeMK2(bpy.types.Node, SverchCustomTreeNode):
 
     def process(self):
 
-        print("{}: Selected verts: {}".format(self.name, get_indices(self.selected_verts)))
-        print("{}: Selected edges: {}".format(self.name, get_indices(self.selected_edges)))
-        print("{}: Selected faces: {}".format(self.name, get_indices(self.selected_faces)))
+        #print("{}: Selected verts: {}".format(self.name, get_indices(self.selected_verts)))
+        #print("{}: Selected edges: {}".format(self.name, get_indices(self.selected_edges)))
+        #print("{}: Selected faces: {}".format(self.name, get_indices(self.selected_faces)))
 
         if self.outputs['Verts mask'].is_linked:
             self.outputs['Verts mask'].sv_set(self.get_selected_vertices())
